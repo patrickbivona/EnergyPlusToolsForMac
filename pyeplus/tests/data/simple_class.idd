@@ -1,0 +1,7 @@
+Class,
+  A1 , \field Field1
+       \type alpha
+  A2 , \field Field2
+       \type alpha
+  A3;  \field Field3
+       \type alpha

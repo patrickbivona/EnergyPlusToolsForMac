@@ -1,0 +1,17 @@
+
+Class1,
+  A1 , \field Field1
+       \type alpha
+  A2 , \field Field2
+       \type alpha
+  A3;  \field Field3
+       \type alpha
+
+Class1,
+  N1 , \field Field1
+       \type numeric
+  N2 , \field Field2
+       \type numeric
+  A3;  \field Field3
+       \type alpha
+
