@@ -7,7 +7,7 @@
 //
 
 #import "IDFWindowController.h"
-
+#import "Document.h"
 
 @implementation IDFWindowController
 
@@ -19,13 +19,47 @@
     return self;
 }
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
     [super windowDidLoad];
     
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    if (self.document) {
+
+        if (objectsTableView.tableColumns.count > 0) {
+            NSTableColumn *oldTableColumn = [objectsTableView.tableColumns objectAtIndex:0];
+            while (oldTableColumn) {
+                [objectsTableView removeTableColumn:oldTableColumn];
+                oldTableColumn = [objectsTableView.tableColumns objectAtIndex:0];
+            }
+        }
+    
+        Document *doc = (Document *)self.document;
+        NSArray *idfObject = [doc idfObject];
+        for (NSString *elt in idfObject) {
+            NSTableColumn *tableColumn = [[NSTableColumn alloc] initWithIdentifier:elt];
+            [tableColumn.headerCell setTitle:elt];
+            [objectsTableView addTableColumn:tableColumn];
+        }
+    }
+    
 }
 
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return 1;
+}
 
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+        
+    NSTextField *result = [tableView makeViewWithIdentifier:@"MyView" owner:self];
+    if (! result) {
+        result = [[NSTextField alloc] initWithFrame:CGRectZero];
+        [result setBordered:FALSE];
+        result.identifier = @"MyView";
+    }
+    
+    Document *doc = (Document *)self.document;
+    result.stringValue = [[doc idfObject] objectAtIndex:0];
+    
+    return result;
+}
 
 @end

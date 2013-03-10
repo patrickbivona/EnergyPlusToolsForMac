@@ -14,7 +14,10 @@
 
 @interface Document : NSDocument {
     IDFWindowController *idfWinController;
+    NSArray *idfObject;
 }
+
+- (NSArray *)idfObject;
 
 
 @end

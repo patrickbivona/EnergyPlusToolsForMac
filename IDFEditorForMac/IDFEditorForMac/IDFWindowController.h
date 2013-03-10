@@ -8,8 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IDFWindowController : NSWindowController {
-
+@interface IDFWindowController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
+    IBOutlet NSTableView *objectsTableView;
 }
 
 @end
