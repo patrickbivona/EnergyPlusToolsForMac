@@ -19,6 +19,11 @@
     return self;
 }
 
+- (void)dealloc {
+    [objectsTableView release];
+    [super dealloc];
+}
+
 - (void)windowDidLoad {
     [super windowDidLoad];
     

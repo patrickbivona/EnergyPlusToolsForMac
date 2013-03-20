@@ -8,7 +8,7 @@
 
 #import "Document.h"
 #import "IDFWindowController.h"
-
+#import "PyIdfFileIO.h"
 
 @implementation Document
 
@@ -18,6 +18,14 @@
         
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [py release];
+    [idfObject release];
+    [idfWinController release];
+    [super dealloc];
 }
 
 + (BOOL)autosavesInPlace {
@@ -32,10 +40,19 @@
     return [idfAsString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError {
+-(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
+
+    if (! url.isFileURL)
+        return FALSE;
     
-    NSString *idfAsString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    idfObject = [idfAsString componentsSeparatedByString:@","];
+    py = [[PyIdfFileIO alloc] init];
+
+    NSString *path =[url path];
+    NSArray *objects = [py readEplusObjectsFromFile:path];
+    if (! objects || [objects count] == 0)
+        return FALSE;
+
+    idfObject = [[objects objectAtIndex:0] retain];
     return TRUE;
 }
 
