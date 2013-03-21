@@ -54,4 +54,24 @@
 
 }
 
+- (void)writeEplusObjects:(NSArray *)objs toFile:(NSString *)path
+{
+    OBJP_LOCKGIL;
+    PyObject *pFunc = PyObject_GetAttrString(_py, "writeEplusObjects_toFile_");
+    OBJP_ERRCHECK(pFunc);
+    
+    PyObject *pobjs = ObjP_list_o2p(objs);
+    PyObject *ppath = ObjP_str_o2p(path);
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, pobjs, ppath, NULL);
+    Py_DECREF(pobjs);
+    Py_DECREF(ppath);
+    OBJP_ERRCHECK(pResult);
+    Py_DECREF(pFunc);
+
+    
+    Py_DECREF(pResult);
+    OBJP_UNLOCKGIL;
+
+}
+
 @end

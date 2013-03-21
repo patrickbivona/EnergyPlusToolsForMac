@@ -10,4 +10,5 @@
 - (PyObject *)pyRef;
 - (id)init;
 - (NSArray *)readEplusObjectsFromFile:(NSString *)path;
+- (void)writeEplusObjects:(NSArray *)objs toFile:(NSString *)path;
 @end

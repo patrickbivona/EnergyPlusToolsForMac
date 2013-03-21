@@ -32,12 +32,13 @@
     return YES;
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError {
-    if (! idfObject) {
-        return nil;
-    }
-    NSString *idfAsString = [idfObject componentsJoinedByString:@","];
-    return [idfAsString dataUsingEncoding:NSUTF8StringEncoding];
+-(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError {
+    
+    if (! (url.isFileURL && py))
+        return FALSE;
+    
+    [py writeEplusObjects:[NSArray arrayWithObject:idfObject] toFile:[url path]];
+    return TRUE;
 }
 
 -(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
