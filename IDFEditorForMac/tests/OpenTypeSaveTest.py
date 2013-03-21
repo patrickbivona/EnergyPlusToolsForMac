@@ -51,11 +51,7 @@ class OpenTypeSaveTestCase(unittest.TestCase):
     #     self.assertIdfFileContentEquals(expected)
 
     def test_open_file_and_save_as_other(self):
-        try:
-            os.remove('other_file.idf')
-        except OSError, e:  # this would be "except OSError as e:" in python 3.x
-            if e.errno != errno.ENOENT:  # errno.ENOENT = no such file or directory
-                raise  # re-raise exception if a different error occured
+        remove_test_file('other_file.idf')
         self.app_proxy.launch_app()
         self.app_proxy.open_test_idf('test_file.idf')
         self.app_proxy.save_test_idf_as('other_file.idf')
@@ -71,6 +67,14 @@ class OpenTypeSaveTestCase(unittest.TestCase):
         with open(file2, 'r') as f2:
             content2 = f2.read()
         self.assertEquals(content1, content2)
+
+
+def remove_test_file(path):
+    try:
+        os.remove(path)
+    except OSError as e:
+        if e.errno != errno.ENOENT:  # errno.ENOENT = no such file or directory
+            raise  # re-raise exception if a different error occured
 
 
 def app_path():
