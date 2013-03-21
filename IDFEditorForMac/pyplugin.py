@@ -1,7 +1,12 @@
-from objp.util import pyref
+import os.path
 
 
 class PyIdfFileIO:
 
     def readEplusObjectsFromFile_(self, path: str) -> list:
-        return ["Class,value1,value2".split(",")]
+        if not os.path.exists(path):
+            return []
+
+        with open(path, 'r') as f:
+            idf = f.read()
+        return [idf.split(',')]

@@ -36,7 +36,8 @@ def run_tests():
     # a test is a python script that calls OSA instructions
     # why not make it a unittest script?
     os.chdir('tests')
-    subprocess.call(['nosetests', '*Test.py'])
+    # subprocess.call(['nosetests', '*Test.py'])
+    os.system('nosetests *Test.py')
     os.chdir('..')
     # show result
 
