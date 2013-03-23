@@ -31,14 +31,14 @@ def build():
     subprocess.call('xcodebuild')
 
 
-def run_tests():
+def run_acceptance_tests():
     # launch test
     # a test is a python script that calls OSA instructions
     # why not make it a unittest script?
-    os.chdir('tests')
+    os.chdir('tests/acceptance')
     # subprocess.call(['nosetests', '*Test.py'])
     os.system('nosetests')
-    os.chdir('..')
+    os.chdir('../..')
     # show result
 
 if __name__ == '__main__':
@@ -52,4 +52,4 @@ if __name__ == '__main__':
     if cmd == 'build':
         build()
     if cmd == 'test':
-        run_tests()
+        run_acceptance_tests()

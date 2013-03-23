@@ -17,6 +17,7 @@ class IdfEditorAppProxy:
     def open_test_idf(self, relative_filepath):
         fullpath = os.path.join(os.getcwd(), relative_filepath)
         filedir, filename = os.path.split(fullpath)
+        print(filedir)
         self._run_ascript("scripts/open_idf.scpt", [filedir, filename])
 
     def save_test_idf_as(self, relative_filepath):
@@ -74,4 +75,4 @@ class OpenTypeSaveTestCase(unittest.TestCase):
 
 
 def app_path():
-    return os.path.join(os.getcwd(), '../build/Debug/IDFEditorForMac.app')
+    return os.path.join(os.getcwd(), '../build/Release/IDFEditorForMac.app')
