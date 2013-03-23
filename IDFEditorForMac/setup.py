@@ -37,7 +37,7 @@ def run_tests():
     # why not make it a unittest script?
     os.chdir('tests')
     # subprocess.call(['nosetests', '*Test.py'])
-    os.system('nosetests *Test.py')
+    os.system('nosetests')
     os.chdir('..')
     # show result
 
