@@ -4,6 +4,7 @@ import os.path
 import subprocess
 import shutil
 
+sys.path.append(os.path.join(os.getcwd(), '../pyeplus'))
 
 def build():
     import pyplugin
@@ -14,14 +15,16 @@ def build():
     pydest = 'build/py'
     if not os.path.exists(pydest):
         os.mkdir(pydest)
-    shutil.copy(os.path.join('.', 'pyplugin.py'), pydest)
+    shutil.copy(os.path.join(os.getcwd(), 'pyplugin.py'), pydest)
+    shutil.copy('../pyeplus/eplus.py', pydest)
+
     # For some strange reason, a "site.py" file is required at pydest.
     with open(os.path.join('build/py', 'site.py'), 'w'):
         pass
 
     from pluginbuilder import copy_embeddable_python_dylib, collect_dependencies
     copy_embeddable_python_dylib('build')
-    collect_dependencies(os.path.join('.', 'pyplugin.py'), 'build/py')
+    collect_dependencies(os.path.join('.', 'pyplugin.py'), pydest)
 
     from pluginbuilder import get_python_header_folder
     if not os.path.exists('build/PythonHeaders'):

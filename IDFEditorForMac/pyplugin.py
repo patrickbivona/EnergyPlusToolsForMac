@@ -1,4 +1,5 @@
 import os.path
+import eplus
 
 
 class PyIdfFileIO:
@@ -7,13 +8,15 @@ class PyIdfFileIO:
         if not os.path.exists(path):
             return []
 
-        with open(path, 'r') as f:
-            idf = f.read()
-        return [idf.split(',')]
+        parser = eplus.IdfParser()
+        accepted_classes = {
+            'Class1': eplus.ClassDefinition('Class1', [
+                eplus.FieldDefinition('A1', {'type': 'alpha'}),
+                eplus.FieldDefinition('A2', {'type': 'alpha'})])
+        }
+        (objs, errors) = parser.parse_file(path, accepted_classes)
+        return objs
 
     def writeEplusObjects_toFile_(self, objs:list, path:str):
-        with open(path, 'w') as f:
-            if len(objs) == 0:
-                f.write('')
-            else:
-                f.write(','.join(objs[0]))
+        parser = IdfParser()
+        parser.write_file(objs, path)

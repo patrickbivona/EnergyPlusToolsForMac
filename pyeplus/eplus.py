@@ -147,5 +147,5 @@ class DataDictionaryParser(object):
         class_def = ClassDefinition(parsed_class.class_name, [])
         for raw_field in parsed_class.fields:
             class_def.add_field(FieldDefinition(raw_field.id, raw_field[1]))
-        print class_def
+        print(class_def)
         return {class_def.name: class_def}
