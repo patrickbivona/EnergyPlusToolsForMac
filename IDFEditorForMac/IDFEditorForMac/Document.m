@@ -23,7 +23,7 @@
 - (void)dealloc
 {
     [py release];
-    [idfObject release];
+    [idfObjects release];
     [idfWinController release];
     [super dealloc];
 }
@@ -37,7 +37,7 @@
     if (! (url.isFileURL && py))
         return FALSE;
     
-    [py writeEplusObjects:[NSArray arrayWithObject:idfObject] toFile:[url path]];
+    [py writeEplusObjects:idfObjects toFile:[url path]];
     return TRUE;
 }
 
@@ -53,7 +53,7 @@
     if (! objects || [objects count] == 0)
         return FALSE;
 
-    idfObject = [[objects objectAtIndex:0] retain];
+    idfObjects = [objects retain];
     return TRUE;
 }
 
@@ -61,8 +61,8 @@
     [self addWindowController:[[IDFWindowController alloc] init]];
 }
 
-- (NSArray *)idfObject {
-    return idfObject;
+- (NSArray *)idfObjects {
+    return idfObjects;
 }
 
 @end

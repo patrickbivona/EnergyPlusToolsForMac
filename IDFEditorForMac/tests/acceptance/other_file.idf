@@ -1,1 +1,2 @@
-Class1,value1,value2
+Version,7.2;
+ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless;

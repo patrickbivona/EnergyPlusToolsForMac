@@ -14,6 +14,6 @@ class BridgeTestCase(unittest.TestCase):
 
     def test_open_returns_objects_for_valid_file(self):
         objs = self.bridge.readEplusObjectsFromFile_('test_file.idf')
-        self.assertEquals(len(objs), 1)
-        obj = objs[0]
-        self.assertEquals(obj, "Class1,value1,value2".split(','))
+        self.assertEquals(len(objs), 2)
+        self.assertEquals(objs[0], "Version,7.2".split(','))
+        self.assertEquals(objs[1], "ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(','))

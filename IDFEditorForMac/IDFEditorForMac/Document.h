@@ -16,11 +16,11 @@
 
 @interface Document : NSDocument {
     IDFWindowController *idfWinController;
-    NSArray *idfObject;
+    NSArray *idfObjects;
     PyIdfFileIO *py;
 }
 
-- (NSArray *)idfObject;
+- (NSArray *)idfObjects;
 
 
 @end

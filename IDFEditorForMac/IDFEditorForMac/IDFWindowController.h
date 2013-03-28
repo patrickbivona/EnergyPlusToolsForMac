@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IDFWindowController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
-    IBOutlet NSTableView *objectsTableView;
+@interface IDFWindowController : NSWindowController {
+    IBOutlet NSOutlineView *classesOutlineView;
+    IBOutlet NSTextView *objectsTextView;
 }
 
 @end
