@@ -1,7 +1,7 @@
 import unittest
 import os
 import eplus
-import test_harness as test
+import tests.harness as test
 
 
 class IdfParserTest(unittest.TestCase):
@@ -9,7 +9,7 @@ class IdfParserTest(unittest.TestCase):
     def setUp(self):
         self.parser = eplus.IdfParser()
         self.single_allowed_class = {'Class': eplus.ClassDefinition('Class', [self._make_alpha_field("A" + str(n)) for n in range(3)])}
-        self.two_allowed_classes = {'Class1': eplus.ClassDefinition('Class1', [self._make_alpha_field("A" + str(n)) for n in range(3)]),\
+        self.two_allowed_classes = {'Class1': eplus.ClassDefinition('Class1', [self._make_alpha_field("A" + str(n)) for n in range(3)]),
                                     'Class2': eplus.ClassDefinition('Class2', [self._make_alpha_field("A" + str(n)) for n in range(3)])}
 
     def test_parses_single_inline_object_without_spaces(self):
@@ -23,11 +23,10 @@ class IdfParserTest(unittest.TestCase):
         self._assert_parsing(idf, self.single_allowed_class, expected)
 
     def test_parses_single_object_on_multiple_lines(self):
-        idf = \
-        "Class,\n\
-          value1,\
-          value2,\
-          value3;"
+        idf = """Class,\n
+          value1,
+          value2,
+          value3;"""
         expected = ['Class value1 value2 value3'.split(' ')]
         self._assert_parsing(idf, self.single_allowed_class, expected)
 

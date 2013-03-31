@@ -27,5 +27,5 @@ class PyIdfFileIO:
         return objs
 
     def writeEplusObjects_toFile_(self, objs:list, path:str):
-        parser = IdfParser()
+        parser = eplus.IdfParser()
         parser.write_file(objs, path)

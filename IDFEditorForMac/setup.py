@@ -31,7 +31,7 @@ def build():
         os.symlink(get_python_header_folder(), 'build/PythonHeaders')
 
     # build app
-    subprocess.call('xcodebuild')
+    os.system('xcodebuild -target IDFEditorForMac clean build')
 
 
 def run_acceptance_tests():

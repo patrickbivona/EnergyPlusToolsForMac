@@ -1,4 +1,5 @@
 import pyparsing as pp
+import re
 
 
 class IdfParser(object):
@@ -49,7 +50,7 @@ class IdfParser(object):
     def write_file(self, objects, filename):
         with open(filename, 'w') as f:
             for obj in objects:
-                f.write(', '.join(obj) + '\n')
+                f.write(','.join(obj) + ';\n')
 
 
 class ClassDefinition(object):
@@ -85,8 +86,8 @@ class FieldDefinition(object):
         self.attributes = attributes
 
     def __repr__(self):
-        repr = "field %s{ " % self.id
-        for (attr_key, attr_value) in self.attributes.iteritems():
+        repr = " field %s { " % self.id
+        for (attr_key, attr_value) in self.attributes.items():
             repr += "%s:%s " % (attr_key, attr_value)
         repr += "}"
         return repr
@@ -111,41 +112,45 @@ comma = pp.Suppress(pp.Literal(','))
 semicolon = pp.Suppress(pp.Literal(';'))
 backslash = pp.Suppress('\\')
 
-class_name = pp.Word(pp.alphas)
-field_id = pp.Combine(pp.Literal('A') + pp.Word(pp.nums))
+class_name = pp.Word(pp.alphanums)
+field_id = pp.Combine(pp.oneOf('A N') + pp.Word(pp.nums))
 field_name = backslash + pp.Literal('field') + pp.Word(pp.alphanums)
 field_type = backslash + pp.Literal('type') + pp.Word(pp.alphanums)
 field_attribute = pp.Group(field_name | field_type)
 
-field_definition = pp.Group(field_id.setResultsName("id") + \
-                            (comma | semicolon) + \
+field_definition = pp.Group(field_id.setResultsName("id") +
+                            (comma | semicolon) +
                             pp.Group(pp.Dict((pp.ZeroOrMore(field_attribute)))))
 classs = class_name.setResultsName("class_name") + comma + pp.OneOrMore(field_definition).setResultsName("fields")
+classes = pp.ZeroOrMore(pp.Group(classs))
+
+
+class ClassDefinitionReader(object):
+
+    def definitions(self):
+        return []
 
 
 class DataDictionaryParser(object):
     def __init__(self):
         pass
 
-    def parse(self, idd_file_path):
-
+    def parse(self, idd_string):
+        raw_defs = classes.parseString(idd_string)
         class_defs = {}
-
-        with open(idd_file_path, 'r') as idd:
-            idd_object_buffer = ""
-            try:
-                for line in idd:
-                    idd_object_buffer += line
-                    if ';' in line:
-                        class_defs.update(self._parse_definition(idd_object_buffer))
-            except StopIteration:
-                class_defs.update(self._parse_definition(idd_object_buffer))
+        for raw_def in raw_defs:
+            class_def = self._make_definition(raw_def)
+            if class_def:
+                class_defs[class_def.name] = class_def
         return class_defs
 
-    def _parse_definition(self, raw_def):
-        parsed_class = classs.parseString(raw_def)
-        class_def = ClassDefinition(parsed_class.class_name, [])
-        for raw_field in parsed_class.fields:
+    def parse_file(self, idd_file_path):
+        with open(idd_file_path, 'r') as idd:
+            return self.parse(idd.read())
+
+    def _make_definition(self, raw_def):
+        class_def = ClassDefinition(raw_def.class_name, [])
+        for raw_field in raw_def.fields:
             class_def.add_field(FieldDefinition(raw_field.id, raw_field[1]))
         print(class_def)
-        return {class_def.name: class_def}
+        return class_def

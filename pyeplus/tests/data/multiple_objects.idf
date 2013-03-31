@@ -1,9 +1,9 @@
-Class1:
-	alpha1,
-	alpha2,
-	alpha3;
+Class1,
+    alpha1,
+    alpha2,
+    alpha3;
 
-Class2:
-	1,
-	2,
-	alpha3;
+Class2,
+    1,
+    2,
+    alpha3;

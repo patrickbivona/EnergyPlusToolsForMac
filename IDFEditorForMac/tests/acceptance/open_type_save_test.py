@@ -1,4 +1,4 @@
-import unittest
+import tests.harness
 import os
 import os.path
 import errno
@@ -30,7 +30,7 @@ class IdfEditorAppProxy:
         subprocess.call(['osascript', script_filepath] + script_args)
 
 
-class OpenTypeSaveTestCase(unittest.TestCase):
+class OpenTypeSaveTestCase(tests.harness.PyEplusTestCase):
 
     def setUp(self):
         self.app_proxy = IdfEditorAppProxy()
@@ -62,16 +62,6 @@ class OpenTypeSaveTestCase(unittest.TestCase):
         self.app_proxy.save_test_idf_as('other_file.idf')
         time.sleep(1)
         self.assertIdfFilesContentEquals('test_file.idf', 'other_file.idf')
-
-    def assertIdfFileContentEquals(self, expected_content):
-        self.assertTrue(False)
-
-    def assertIdfFilesContentEquals(self, file1, file2):
-        with open(file1, 'r') as f1:
-            content1 = f1.read()
-        with open(file2, 'r') as f2:
-            content2 = f2.read()
-        self.assertEquals(content1, content2)
 
 
 def app_path():
