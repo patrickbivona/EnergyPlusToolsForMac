@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "PyIdfFileIO.h"
+#import "PyIdfDocument.h"
 
 
 @class PyIdfFileIO;
@@ -16,11 +16,10 @@
 
 @interface Document : NSDocument {
     IDFWindowController *idfWinController;
-    NSArray *idfObjects;
-    PyIdfFileIO *py;
+    PyIdfDocument *pyDoc;
 }
 
 - (NSArray *)idfObjects;
-
+- (NSDictionary *)classesWithObjectCount;
 
 @end

@@ -14,18 +14,23 @@ accepted_classes = {
 }
 
 
-class PyIdfFileIO:
+class PyIdfDocument:
 
-    def readEplusObjectsFromFile_(self, path: str) -> list:
+    def __init__(self):
+        self.objs = []
+
+    def readFromFile_(self, path: str):
         if not os.path.exists(path):
             return []
 
         parser = eplus.IdfParser()
-        (objs, errors) = parser.parse_file(path, accepted_classes)
+        (self.objs, errors) = parser.parse_file(path, accepted_classes)
         if len(errors) > 0:
             print(errors)
-        return objs
 
-    def writeEplusObjects_toFile_(self, objs:list, path:str):
+    def writeToFile_(self, path:str):
         parser = eplus.IdfParser()
-        parser.write_file(objs, path)
+        parser.write_file(self.objs, path)
+
+    def objects(self) -> list:
+        return self.objs

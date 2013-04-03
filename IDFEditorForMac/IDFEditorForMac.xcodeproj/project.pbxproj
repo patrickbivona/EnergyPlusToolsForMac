@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		CD31416D16F7EFF500E39598 /* Python in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFE8C5616F762AC00A9D056 /* Python */; };
 		CD31416F16F7F00600E39598 /* Python in CopyFiles */ = {isa = PBXBuildFile; fileRef = CDFE8C5616F762AC00A9D056 /* Python */; };
+		CD7E3F48170C825C0051CE1C /* PyIdfDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7E3F47170C825C0051CE1C /* PyIdfDocument.m */; };
 		CD8FAA4016F8AB04007A3ED0 /* ObjP.m in Sources */ = {isa = PBXBuildFile; fileRef = CD31416216F7677500E39598 /* ObjP.m */; };
-		CD8FAA4116F8AB04007A3ED0 /* PyIdfFileIO.m in Sources */ = {isa = PBXBuildFile; fileRef = CD31416416F7677500E39598 /* PyIdfFileIO.m */; };
 		CD8FAA4316F8AF62007A3ED0 /* py in Resources */ = {isa = PBXBuildFile; fileRef = CD8FAA4216F8AF61007A3ED0 /* py */; };
 		CD9D9A1B16BFE748005896DE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D9A1A16BFE748005896DE /* Cocoa.framework */; };
 		CD9D9A2516BFE748005896DE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD9D9A2316BFE748005896DE /* InfoPlist.strings */; };
@@ -38,8 +38,8 @@
 /* Begin PBXFileReference section */
 		CD31416116F7677500E39598 /* ObjP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjP.h; sourceTree = "<group>"; };
 		CD31416216F7677500E39598 /* ObjP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjP.m; sourceTree = "<group>"; };
-		CD31416316F7677500E39598 /* PyIdfFileIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PyIdfFileIO.h; sourceTree = "<group>"; };
-		CD31416416F7677500E39598 /* PyIdfFileIO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PyIdfFileIO.m; sourceTree = "<group>"; };
+		CD7E3F46170C825C0051CE1C /* PyIdfDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PyIdfDocument.h; sourceTree = "<group>"; };
+		CD7E3F47170C825C0051CE1C /* PyIdfDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyIdfDocument.m; sourceTree = "<group>"; };
 		CD8FAA4216F8AF61007A3ED0 /* py */ = {isa = PBXFileReference; lastKnownFileType = folder; name = py; path = build/py; sourceTree = "<group>"; };
 		CD9D9A1616BFE748005896DE /* IDFEditorForMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IDFEditorForMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD9D9A1A16BFE748005896DE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -76,10 +76,10 @@
 		CD31416016F766B200E39598 /* autogen */ = {
 			isa = PBXGroup;
 			children = (
+				CD7E3F46170C825C0051CE1C /* PyIdfDocument.h */,
+				CD7E3F47170C825C0051CE1C /* PyIdfDocument.m */,
 				CD31416116F7677500E39598 /* ObjP.h */,
 				CD31416216F7677500E39598 /* ObjP.m */,
-				CD31416316F7677500E39598 /* PyIdfFileIO.h */,
-				CD31416416F7677500E39598 /* PyIdfFileIO.m */,
 			);
 			path = autogen;
 			sourceTree = "<group>";
@@ -217,10 +217,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD8FAA4016F8AB04007A3ED0 /* ObjP.m in Sources */,
-				CD8FAA4116F8AB04007A3ED0 /* PyIdfFileIO.m in Sources */,
 				CD9D9A2716BFE748005896DE /* main.m in Sources */,
 				CD9D9A2E16BFE748005896DE /* Document.m in Sources */,
 				CDE99E2316D661A700BC9F5B /* IDFWindowController.m in Sources */,
+				CD7E3F48170C825C0051CE1C /* PyIdfDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +334,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/build\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -355,7 +355,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/build\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

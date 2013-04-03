@@ -1,16 +1,16 @@
 import sys
 import os
 import os.path
-import subprocess
 import shutil
 
 sys.path.append(os.path.join(os.getcwd(), '../pyeplus'))
+
 
 def build():
     import pyplugin
     import objp.o2p
 
-    objp.o2p.generate_objc_code(pyplugin.PyIdfFileIO, os.path.join('.', 'autogen'))
+    objp.o2p.generate_objc_code(pyplugin.PyIdfDocument, os.path.join('.', 'autogen'))
 
     pydest = 'build/py'
     if not os.path.exists(pydest):

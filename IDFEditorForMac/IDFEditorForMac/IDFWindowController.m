@@ -21,6 +21,7 @@
 
 - (void)dealloc {
     [objectsTextView release];
+    [classesOutlineView release];
     [super dealloc];
 }
 
@@ -28,6 +29,10 @@
     [super windowDidLoad];
     
     if (self.document) {
+        [classesOutlineView sizeLastColumnToFit];
+        [classesOutlineView setFloatsGroupRows:NO];
+        [self updateClassList];
+        
         Document *doc = (Document *)self.document;
         NSArray *idfObjects = [doc idfObjects];
         for (NSArray *idfObject in idfObjects) {
@@ -39,7 +44,47 @@
             }            
         }
     }
-    
+}
+
+- (void)updateClassList {
+    if (classesWithCount) {
+        [classesWithCount release];
+    }
+    if (self.document) {
+        classesWithCount = [[self.document classesWithObjectCount] retain];
+    } else {
+        classesWithCount = [[NSDictionary dictionary] retain];
+    }
+    [classesOutlineView reloadData];
+}
+
+
+#pragma mark - NSOutlineViewDataSource
+
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
+    if (! classesWithCount || item)
+        return nil;
+    // TODO optimise by not sorting the list at every call
+    NSArray *orderedClasses = [classesWithCount keysSortedByValueUsingSelector:@selector(compare:)];
+    NSString *result = [orderedClasses objectAtIndex:index];
+    return result;
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
+    if (! classesWithCount || item)
+        return 0;
+    return [classesWithCount count];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
+    return NO;
+}
+
+- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+    NSTableCellView *result = [outlineView makeViewWithIdentifier:@"EplusClassName" owner:self];
+    [result.textField setStringValue:item];
+    return result;
 }
 
 @end

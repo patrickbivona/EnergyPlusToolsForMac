@@ -1,8 +1,8 @@
 
-#import "PyIdfFileIO.h"
+#import "PyIdfDocument.h"
 #import "ObjP.h"
 
-@implementation PyIdfFileIO
+@implementation PyIdfDocument
 - (void)dealloc
 {
     OBJP_LOCKGIL;
@@ -21,7 +21,7 @@
 {
     self = [super init];
     OBJP_LOCKGIL;
-    PyObject *pFunc = ObjP_findPythonClass(@"PyIdfFileIO", nil);
+    PyObject *pFunc = ObjP_findPythonClass(@"PyIdfDocument", nil);
     
 
     PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, NULL);
@@ -34,15 +34,15 @@
     return self;
 }
 
-- (NSArray *)readEplusObjectsFromFile:(NSString *)path
+- (NSArray *)objects
 {
     OBJP_LOCKGIL;
-    PyObject *pFunc = PyObject_GetAttrString(_py, "readEplusObjectsFromFile_");
+    PyObject *pFunc = PyObject_GetAttrString(_py, "objects");
     OBJP_ERRCHECK(pFunc);
     
-    PyObject *ppath = ObjP_str_o2p(path);
-    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, ppath, NULL);
-    Py_DECREF(ppath);
+
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, NULL);
+
     OBJP_ERRCHECK(pResult);
     Py_DECREF(pFunc);
 
@@ -54,16 +54,32 @@
 
 }
 
-- (void)writeEplusObjects:(NSArray *)objs toFile:(NSString *)path
+- (void)readFromFile:(NSString *)path
 {
     OBJP_LOCKGIL;
-    PyObject *pFunc = PyObject_GetAttrString(_py, "writeEplusObjects_toFile_");
+    PyObject *pFunc = PyObject_GetAttrString(_py, "readFromFile_");
     OBJP_ERRCHECK(pFunc);
     
-    PyObject *pobjs = ObjP_list_o2p(objs);
     PyObject *ppath = ObjP_str_o2p(path);
-    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, pobjs, ppath, NULL);
-    Py_DECREF(pobjs);
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, ppath, NULL);
+    Py_DECREF(ppath);
+    OBJP_ERRCHECK(pResult);
+    Py_DECREF(pFunc);
+
+    
+    Py_DECREF(pResult);
+    OBJP_UNLOCKGIL;
+
+}
+
+- (void)writeToFile:(NSString *)path
+{
+    OBJP_LOCKGIL;
+    PyObject *pFunc = PyObject_GetAttrString(_py, "writeToFile_");
+    OBJP_ERRCHECK(pFunc);
+    
+    PyObject *ppath = ObjP_str_o2p(path);
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, ppath, NULL);
     Py_DECREF(ppath);
     OBJP_ERRCHECK(pResult);
     Py_DECREF(pFunc);

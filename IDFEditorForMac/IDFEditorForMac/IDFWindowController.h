@@ -8,9 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IDFWindowController : NSWindowController {
+@interface IDFWindowController : NSWindowController <NSOutlineViewDataSource, NSOutlineViewDelegate> {
     IBOutlet NSOutlineView *classesOutlineView;
     IBOutlet NSTextView *objectsTextView;
+    
+    NSDictionary *classesWithCount;
 }
 
 @end

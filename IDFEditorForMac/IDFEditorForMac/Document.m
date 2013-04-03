@@ -8,22 +8,19 @@
 
 #import "Document.h"
 #import "IDFWindowController.h"
-#import "PyIdfFileIO.h"
 
 @implementation Document
 
 - (id)init {
     self = [super init];
     if (self) {
-        
+        pyDoc = [[PyIdfDocument alloc] init];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [py release];
-    [idfObjects release];
+- (void)dealloc {
+    [pyDoc release];
     [idfWinController release];
     [super dealloc];
 }
@@ -34,10 +31,10 @@
 
 -(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError {
     
-    if (! (url.isFileURL && py))
+    if (! (url.isFileURL && pyDoc))
         return FALSE;
     
-    [py writeEplusObjects:idfObjects toFile:[url path]];
+    [pyDoc writeToFile:[url path]];
     return TRUE;
 }
 
@@ -46,14 +43,8 @@
     if (! url.isFileURL)
         return FALSE;
     
-    py = [[PyIdfFileIO alloc] init];
-
     NSString *path =[url path];
-    NSArray *objects = [py readEplusObjectsFromFile:path];
-    if (! objects || [objects count] == 0)
-        return FALSE;
-
-    idfObjects = [objects retain];
+    [pyDoc readFromFile:path];
     return TRUE;
 }
 
@@ -62,7 +53,16 @@
 }
 
 - (NSArray *)idfObjects {
-    return idfObjects;
+    if (pyDoc)
+        return [pyDoc objects];
+    else
+        return [NSArray array];
+}
+
+- (NSDictionary *)classesWithObjectCount {
+    return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"Version",
+                                                      [NSNumber numberWithInt:2], @"ScheduleTypeLimits",
+                                                      nil];
 }
 
 @end
