@@ -34,6 +34,26 @@
     return self;
 }
 
+- (NSDictionary *)classesWithObjectCount
+{
+    OBJP_LOCKGIL;
+    PyObject *pFunc = PyObject_GetAttrString(_py, "classesWithObjectCount");
+    OBJP_ERRCHECK(pFunc);
+    
+
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, NULL);
+
+    OBJP_ERRCHECK(pResult);
+    Py_DECREF(pFunc);
+
+    
+    NSDictionary * result = ObjP_dict_p2o(pResult);
+    Py_DECREF(pResult);
+    OBJP_UNLOCKGIL;
+    return result;
+
+}
+
 - (NSArray *)objects
 {
     OBJP_LOCKGIL;

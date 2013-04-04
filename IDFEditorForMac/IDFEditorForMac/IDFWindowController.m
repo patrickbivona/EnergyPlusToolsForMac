@@ -67,7 +67,9 @@
         return nil;
     // TODO optimise by not sorting the list at every call
     NSArray *orderedClasses = [classesWithCount keysSortedByValueUsingSelector:@selector(compare:)];
-    NSString *result = [orderedClasses objectAtIndex:index];
+    NSString *className = [orderedClasses objectAtIndex:index];
+    NSNumber *count = [classesWithCount objectForKey:className];
+    NSString *result = [NSString stringWithFormat:@"%@ (%i)", className, [count intValue]];
     return result;
 }
 

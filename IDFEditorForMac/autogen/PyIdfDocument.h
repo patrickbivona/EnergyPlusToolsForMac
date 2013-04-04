@@ -9,6 +9,7 @@
 }
 - (PyObject *)pyRef;
 - (id)init;
+- (NSDictionary *)classesWithObjectCount;
 - (NSArray *)objects;
 - (void)readFromFile:(NSString *)path;
 - (void)writeToFile:(NSString *)path;

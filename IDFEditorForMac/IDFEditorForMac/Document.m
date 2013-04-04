@@ -60,9 +60,7 @@
 }
 
 - (NSDictionary *)classesWithObjectCount {
-    return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"Version",
-                                                      [NSNumber numberWithInt:2], @"ScheduleTypeLimits",
-                                                      nil];
+    return [pyDoc classesWithObjectCount];
 }
 
 @end

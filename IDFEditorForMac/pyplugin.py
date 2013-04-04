@@ -34,3 +34,12 @@ class PyIdfDocument:
 
     def objects(self) -> list:
         return self.objs
+
+    def classesWithObjectCount(self) -> dict:
+        result = {}
+        for obj in self.objs:
+            class_name = obj[0]
+            tmp_count = result.get(class_name, 0)
+            tmp_count += 1
+            result[class_name] = tmp_count
+        return result
