@@ -53,10 +53,11 @@
 }
 
 - (NSArray *)idfObjects {
-    if (pyDoc)
-        return [pyDoc objects];
-    else
-        return [NSArray array];
+    return [pyDoc objects];
+}
+
+- (NSArray *)idfObjectsOfClass:(NSString *)className {
+    return [pyDoc objectsOfClass:className];
 }
 
 - (NSDictionary *)classesWithObjectCount {

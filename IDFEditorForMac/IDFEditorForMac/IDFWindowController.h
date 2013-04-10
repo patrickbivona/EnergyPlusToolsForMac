@@ -15,4 +15,6 @@
     NSDictionary *classesWithCount;
 }
 
+- (void)updateObjectList:(NSArray *)idfObjects;
+
 @end

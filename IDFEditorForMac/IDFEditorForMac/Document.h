@@ -20,6 +20,7 @@
 }
 
 - (NSArray *)idfObjects;
+- (NSArray *)idfObjectsOfClass:(NSString *)className;
 - (NSDictionary *)classesWithObjectCount;
 
 @end

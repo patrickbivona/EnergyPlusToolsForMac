@@ -74,6 +74,26 @@
 
 }
 
+- (NSArray *)objectsOfClass:(NSString *)className
+{
+    OBJP_LOCKGIL;
+    PyObject *pFunc = PyObject_GetAttrString(_py, "objectsOfClass_");
+    OBJP_ERRCHECK(pFunc);
+    
+    PyObject *pclassName = ObjP_str_o2p(className);
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, pclassName, NULL);
+    Py_DECREF(pclassName);
+    OBJP_ERRCHECK(pResult);
+    Py_DECREF(pFunc);
+
+    
+    NSArray * result = ObjP_list_p2o(pResult);
+    Py_DECREF(pResult);
+    OBJP_UNLOCKGIL;
+    return result;
+
+}
+
 - (void)readFromFile:(NSString *)path
 {
     OBJP_LOCKGIL;

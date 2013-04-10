@@ -19,7 +19,7 @@ class PyIdfDocument:
     def __init__(self):
         self.objs = []
 
-    def readFromFile_(self, path: str):
+    def readFromFile_(self, path:str):
         if not os.path.exists(path):
             return []
 
@@ -43,3 +43,6 @@ class PyIdfDocument:
             tmp_count += 1
             result[class_name] = tmp_count
         return result
+
+    def objectsOfClass_(self, className:str) -> list:
+        return [obj for obj in self.objs if obj[0] == className]

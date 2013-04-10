@@ -36,3 +36,11 @@ class BridgeTestCase(tests.harness.PyEplusTestCase):
         self.assertEquals(len(class_count), 2)
         self.assertEquals(class_count['Version'], 1)
         self.assertEquals(class_count['ScheduleTypeLimits'], 2)
+
+    def test_objects_for_class_leaves_other_objects_out(self):
+        self.doc.readFromFile_('test_file.idf')
+        only_version = self.doc.objectsOfClass_('Version')
+        self.assertEquals(only_version[0][0], 'Version')
+        only_schedule_type_limits = self.doc.objectsOfClass_('ScheduleTypeLimits')
+        self.assertEquals(only_schedule_type_limits[0][0], 'ScheduleTypeLimits')
+        self.assertEquals(only_schedule_type_limits[1][0], 'ScheduleTypeLimits')

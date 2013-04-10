@@ -33,31 +33,10 @@
         [classesOutlineView setFloatsGroupRows:NO];
         [self updateClassList];
         
-        Document *doc = (Document *)self.document;
-        NSArray *idfObjects = [doc idfObjects];
-        for (NSArray *idfObject in idfObjects) {
-            if ([idfObject count] > 0) {
-                NSMutableString *obj = [[idfObject componentsJoinedByString:@","] mutableCopy];
-                [obj appendString:@";"];
-                [objectsTextView insertText:obj];
-                [objectsTextView insertText:@"\n"];
-            }            
-        }
+        [classesOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:0]
+                        byExtendingSelection:NO];
     }
 }
-
-- (void)updateClassList {
-    if (classesWithCount) {
-        [classesWithCount release];
-    }
-    if (self.document) {
-        classesWithCount = [[self.document classesWithObjectCount] retain];
-    } else {
-        classesWithCount = [[NSDictionary dictionary] retain];
-    }
-    [classesOutlineView reloadData];
-}
-
 
 #pragma mark - NSOutlineViewDataSource
 
@@ -87,6 +66,51 @@
     NSTableCellView *result = [outlineView makeViewWithIdentifier:@"EplusClassName" owner:self];
     [result.textField setStringValue:item];
     return result;
+}
+
+#pragma mark - NSOutlineViewDelegate
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification {
+    NSString *className = [[self orderedClassNames] objectAtIndex:classesOutlineView.selectedRow];
+    NSArray *obj = [self.document idfObjectsOfClass:className];
+    [self updateObjectList:obj];
+}
+
+#pragma mark - Public
+
+
+- (void)updateClassList {
+    if (classesWithCount) {
+        [classesWithCount release];
+    }
+    if (self.document) {
+        classesWithCount = [[self.document classesWithObjectCount] retain];
+    } else {
+        classesWithCount = [[NSDictionary dictionary] retain];
+    }
+    [classesOutlineView reloadData];
+}
+
+- (void)updateObjectList:(NSArray *)idfObjects {
+    [objectsTextView setString:@""];
+    
+    for (NSArray *idfObject in idfObjects) {
+        if ([idfObject count] > 0) {
+            NSMutableString *obj = [[idfObject componentsJoinedByString:@","] mutableCopy];
+            [obj appendString:@";"];
+            [objectsTextView insertText:obj];
+            [objectsTextView insertText:@"\n"];
+        }
+    }
+}
+
+#pragma mark - Helpers
+
+- (NSArray *)orderedClassNames {
+    if (classesWithCount)
+        return [classesWithCount keysSortedByValueUsingSelector:@selector(compare:)];
+    else
+        return [NSArray array];
 }
 
 @end
