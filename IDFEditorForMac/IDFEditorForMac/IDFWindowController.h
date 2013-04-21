@@ -15,6 +15,15 @@
     NSDictionary *classesWithCount;
 }
 
+@property (retain) NSOutlineView *classesOutlineView;
+@property (retain) NSTextView *objectsTextView;
+
+- (void)selectFirstClass;
+- (void)selectClass:(NSString *)className;
+- (NSString *)selectedClass;
+
 - (void)updateObjectList:(NSArray *)idfObjects;
+
+- (void)showClassesWithObjectsOnly:(BOOL)show;
 
 @end

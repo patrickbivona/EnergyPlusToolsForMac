@@ -17,10 +17,15 @@
 @interface Document : NSDocument {
     IDFWindowController *idfWinController;
     PyIdfDocument *pyDoc;
+    BOOL showClassesWithObjectsOnly;
 }
 
 - (NSArray *)idfObjects;
 - (NSArray *)idfObjectsOfClass:(NSString *)className;
-- (NSDictionary *)classesWithObjectCount;
+
+- (NSDictionary *)allClassesWithObjectCount;
+- (NSDictionary *)onlyClassesWithObjectsWithObjectCount;
+
+- (IBAction)selectedShowClassesWithObjectsOnly:(id)sender;
 
 @end

@@ -15,6 +15,7 @@
     self = [super init];
     if (self) {
         pyDoc = [[PyIdfDocument alloc] init];
+        showClassesWithObjectsOnly = NO;
     }
     return self;
 }
@@ -49,8 +50,32 @@
 }
 
 - (void)makeWindowControllers {
-    [self addWindowController:[[IDFWindowController alloc] init]];
+    if (!idfWinController) {
+        idfWinController = [[IDFWindowController alloc] init];
+        [self addWindowController:idfWinController];
+    }
 }
+
+#pragma mark - Menu items
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+    if ([menuItem action] == @selector(selectedShowClassesWithObjectsOnly:)) {
+        if (showClassesWithObjectsOnly)
+            [menuItem setState:NSOnState];
+        else
+            [menuItem setState:NSOffState];
+        return [[self idfObjects] count] > 0;
+    }
+    return [super validateMenuItem:menuItem];
+}
+
+
+- (IBAction)selectedShowClassesWithObjectsOnly:(id)sender {
+    showClassesWithObjectsOnly = !showClassesWithObjectsOnly;
+    [idfWinController showClassesWithObjectsOnly:showClassesWithObjectsOnly];
+}
+
+#pragma mark - Py-ObjC bridge
 
 - (NSArray *)idfObjects {
     return [pyDoc objects];
@@ -60,8 +85,12 @@
     return [pyDoc objectsOfClass:className];
 }
 
-- (NSDictionary *)classesWithObjectCount {
-    return [pyDoc classesWithObjectCount];
+- (NSDictionary *)allClassesWithObjectCount {
+    return [pyDoc allClassesWithObjectCount];
+}
+
+- (NSDictionary *)onlyClassesWithObjectsWithObjectCount {
+    return [pyDoc onlyClassesWithObjectsWithObjectCount];
 }
 
 @end

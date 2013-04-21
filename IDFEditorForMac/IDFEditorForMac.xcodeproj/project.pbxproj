@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		CD31416D16F7EFF500E39598 /* Python in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFE8C5616F762AC00A9D056 /* Python */; };
 		CD31416F16F7F00600E39598 /* Python in CopyFiles */ = {isa = PBXBuildFile; fileRef = CDFE8C5616F762AC00A9D056 /* Python */; };
+		CD62C67C1723EDAA004F488B /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD62C67B1723EDAA004F488B /* OCMock.framework */; };
+		CD62C6801723EDFC004F488B /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD62C67F1723EDFC004F488B /* OCMock.framework */; };
+		CD7C7E5C1722A2D6002B9765 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD7C7E3D1722A0C9002B9765 /* SenTestingKit.framework */; };
+		CD7C7E5D1722A2D6002B9765 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9D9A1A16BFE748005896DE /* Cocoa.framework */; };
+		CD7C7E631722A2D6002B9765 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD7C7E611722A2D6002B9765 /* InfoPlist.strings */; };
+		CD7C7E661722A2D6002B9765 /* IDFEditorForMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7C7E651722A2D6002B9765 /* IDFEditorForMacTests.m */; };
 		CD7E3F48170C825C0051CE1C /* PyIdfDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7E3F47170C825C0051CE1C /* PyIdfDocument.m */; };
 		CD8FAA4016F8AB04007A3ED0 /* ObjP.m in Sources */ = {isa = PBXBuildFile; fileRef = CD31416216F7677500E39598 /* ObjP.m */; };
 		CD8FAA4316F8AF62007A3ED0 /* py in Resources */ = {isa = PBXBuildFile; fileRef = CD8FAA4216F8AF61007A3ED0 /* py */; };
@@ -33,11 +39,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CD7C7E701722B3E3002B9765 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD62C6801723EDFC004F488B /* OCMock.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CD31416116F7677500E39598 /* ObjP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjP.h; sourceTree = "<group>"; };
 		CD31416216F7677500E39598 /* ObjP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjP.m; sourceTree = "<group>"; };
+		CD62C67B1723EDAA004F488B /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMock.framework; sourceTree = "<group>"; };
+		CD62C67F1723EDFC004F488B /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMock.framework; sourceTree = "<group>"; };
+		CD7C7E3D1722A0C9002B9765 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		CD7C7E5B1722A2D6002B9765 /* IDFEditorForMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IDFEditorForMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD7C7E601722A2D6002B9765 /* IDFEditorForMacTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDFEditorForMacTests-Info.plist"; sourceTree = "<group>"; };
+		CD7C7E621722A2D6002B9765 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CD7C7E641722A2D6002B9765 /* IDFEditorForMacTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDFEditorForMacTests.h; sourceTree = "<group>"; };
+		CD7C7E651722A2D6002B9765 /* IDFEditorForMacTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IDFEditorForMacTests.m; sourceTree = "<group>"; };
+		CD7C7E671722A2D6002B9765 /* IDFEditorForMacTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IDFEditorForMacTests-Prefix.pch"; sourceTree = "<group>"; };
 		CD7E3F46170C825C0051CE1C /* PyIdfDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PyIdfDocument.h; sourceTree = "<group>"; };
 		CD7E3F47170C825C0051CE1C /* PyIdfDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyIdfDocument.m; sourceTree = "<group>"; };
 		CD8FAA4216F8AF61007A3ED0 /* py */ = {isa = PBXFileReference; lastKnownFileType = folder; name = py; path = build/py; sourceTree = "<group>"; };
@@ -55,12 +80,23 @@
 		CD9D9A2D16BFE748005896DE /* Document.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
 		CD9D9A3016BFE748005896DE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/IDFWindow.xib; sourceTree = "<group>"; };
 		CD9D9A3316BFE749005896DE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CDB1BB4D1723D76300ED610D /* IDFEditorForMac copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "IDFEditorForMac copy-Info.plist"; path = "/Users/patrick/Development/Projects/EnergyPlusToolsForMac/IDFEditorForMac/IDFEditorForMac copy-Info.plist"; sourceTree = "<absolute>"; };
 		CDE99E2116D661A700BC9F5B /* IDFWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDFWindowController.h; sourceTree = "<group>"; };
 		CDE99E2216D661A700BC9F5B /* IDFWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDFWindowController.m; sourceTree = "<group>"; };
 		CDFE8C5616F762AC00A9D056 /* Python */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Python; path = build/Python; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CD7C7E571722A2D6002B9765 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD62C67C1723EDAA004F488B /* OCMock.framework in Frameworks */,
+				CD7C7E5C1722A2D6002B9765 /* SenTestingKit.framework in Frameworks */,
+				CD7C7E5D1722A2D6002B9765 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD9D9A1316BFE748005896DE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -84,14 +120,38 @@
 			path = autogen;
 			sourceTree = "<group>";
 		};
+		CD7C7E5E1722A2D6002B9765 /* IDFEditorForMacTests */ = {
+			isa = PBXGroup;
+			children = (
+				CD62C67F1723EDFC004F488B /* OCMock.framework */,
+				CD62C67B1723EDAA004F488B /* OCMock.framework */,
+				CD7C7E641722A2D6002B9765 /* IDFEditorForMacTests.h */,
+				CD7C7E651722A2D6002B9765 /* IDFEditorForMacTests.m */,
+				CD7C7E5F1722A2D6002B9765 /* Supporting Files */,
+			);
+			path = IDFEditorForMacTests;
+			sourceTree = "<group>";
+		};
+		CD7C7E5F1722A2D6002B9765 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CD7C7E601722A2D6002B9765 /* IDFEditorForMacTests-Info.plist */,
+				CD7C7E611722A2D6002B9765 /* InfoPlist.strings */,
+				CD7C7E671722A2D6002B9765 /* IDFEditorForMacTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		CD9D9A0B16BFE748005896DE = {
 			isa = PBXGroup;
 			children = (
 				CD8FAA4216F8AF61007A3ED0 /* py */,
 				CD31416016F766B200E39598 /* autogen */,
 				CD9D9A2016BFE748005896DE /* IDFEditorForMac */,
+				CD7C7E5E1722A2D6002B9765 /* IDFEditorForMacTests */,
 				CD9D9A1916BFE748005896DE /* Frameworks */,
 				CD9D9A1716BFE748005896DE /* Products */,
+				CDB1BB4D1723D76300ED610D /* IDFEditorForMac copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				CD9D9A1616BFE748005896DE /* IDFEditorForMac.app */,
+				CD7C7E5B1722A2D6002B9765 /* IDFEditorForMacTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +169,7 @@
 			children = (
 				CDFE8C5616F762AC00A9D056 /* Python */,
 				CD9D9A1A16BFE748005896DE /* Cocoa.framework */,
+				CD7C7E3D1722A0C9002B9765 /* SenTestingKit.framework */,
 				CD9D9A1C16BFE748005896DE /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -152,6 +214,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CD7C7E5A1722A2D6002B9765 /* IDFEditorForMacTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD7C7E681722A2D6002B9765 /* Build configuration list for PBXNativeTarget "IDFEditorForMacTests" */;
+			buildPhases = (
+				CD7C7E561722A2D6002B9765 /* Sources */,
+				CD7C7E701722B3E3002B9765 /* CopyFiles */,
+				CD7C7E571722A2D6002B9765 /* Frameworks */,
+				CD7C7E581722A2D6002B9765 /* Resources */,
+				CD7C7E591722A2D6002B9765 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IDFEditorForMacTests;
+			productName = IDFEditorForMacTests;
+			productReference = CD7C7E5B1722A2D6002B9765 /* IDFEditorForMacTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		CD9D9A1516BFE748005896DE /* IDFEditorForMac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD9D9A3716BFE749005896DE /* Build configuration list for PBXNativeTarget "IDFEditorForMac" */;
@@ -192,11 +273,20 @@
 			projectRoot = "";
 			targets = (
 				CD9D9A1516BFE748005896DE /* IDFEditorForMac */,
+				CD7C7E5A1722A2D6002B9765 /* IDFEditorForMacTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CD7C7E581722A2D6002B9765 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD7C7E631722A2D6002B9765 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD9D9A1416BFE748005896DE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -211,7 +301,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CD7C7E591722A2D6002B9765 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		CD7C7E561722A2D6002B9765 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD7C7E661722A2D6002B9765 /* IDFEditorForMacTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD9D9A1216BFE748005896DE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -227,6 +341,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		CD7C7E611722A2D6002B9765 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD7C7E621722A2D6002B9765 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		CD9D9A2316BFE748005896DE /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -262,6 +384,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CD7C7E691722A2D6002B9765 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IDFEditorForMac.app/Contents/MacOS/IDFEditorForMac";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)/Dependencies\"",
+					"\"$(SRCROOT)/IDFEditorForMacTests\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IDFEditorForMacTests/IDFEditorForMacTests-Prefix.pch";
+				INFOPLIST_FILE = "IDFEditorForMacTests/IDFEditorForMacTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		CD7C7E6A1722A2D6002B9765 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IDFEditorForMac.app/Contents/MacOS/IDFEditorForMac";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)/Dependencies\"",
+					"\"$(SRCROOT)/IDFEditorForMacTests\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IDFEditorForMacTests/IDFEditorForMacTests-Prefix.pch";
+				INFOPLIST_FILE = "IDFEditorForMacTests/IDFEditorForMacTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
 		CD9D9A3516BFE749005896DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -364,6 +534,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CD7C7E681722A2D6002B9765 /* Build configuration list for PBXNativeTarget "IDFEditorForMacTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD7C7E691722A2D6002B9765 /* Debug */,
+				CD7C7E6A1722A2D6002B9765 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CD9D9A1016BFE748005896DE /* Build configuration list for PBXProject "IDFEditorForMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

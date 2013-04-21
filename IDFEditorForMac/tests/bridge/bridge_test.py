@@ -1,10 +1,10 @@
-import tests.harness
+import tests.harness as th
 import os
 import errno
 import pyplugin
 
 
-class BridgeTestCase(tests.harness.PyEplusTestCase):
+class BridgeTestCase(th.PyEplusTestCase):
 
     def setUp(self):
         self.doc = pyplugin.PyIdfDocument()
@@ -30,12 +30,22 @@ class BridgeTestCase(tests.harness.PyEplusTestCase):
         self.doc.writeToFile_('other_file.idf')
         self.assertIdfFilesContentEquals('test_file.idf', 'other_file.idf')
 
-    def test_returns_object_classes_with_count(self):
+    def test_returns_only_classes_with_objects_with_count(self):
         self.doc.readFromFile_('test_file.idf')
-        class_count = self.doc.classesWithObjectCount()
+        class_count = self.doc.onlyClassesWithObjectsWithObjectCount()
         self.assertEquals(len(class_count), 2)
         self.assertEquals(class_count['Version'], 1)
         self.assertEquals(class_count['ScheduleTypeLimits'], 2)
+
+    def test_returns_all_classes_with_count(self):
+        self.doc.readFromFile_('test_file.idf')
+
+        classes = self.doc.allClassesWithObjectCount()
+
+        self.assertEquals(len(classes), 3)
+        self.assertEquals(classes['Version'], 1)
+        self.assertEquals(classes['ScheduleTypeLimits'], 2)
+        self.assertEquals(classes['Timestep'], 0)
 
     def test_objects_for_class_leaves_other_objects_out(self):
         self.doc.readFromFile_('test_file.idf')

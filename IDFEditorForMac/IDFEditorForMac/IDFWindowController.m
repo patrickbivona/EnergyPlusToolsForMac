@@ -11,6 +11,9 @@
 
 @implementation IDFWindowController
 
+@synthesize classesOutlineView;
+@synthesize objectsTextView;
+
 - (id)init {
     self = [super initWithWindowNibName:@"IDFWindow" owner:self];
     if (self) {
@@ -22,6 +25,7 @@
 - (void)dealloc {
     [objectsTextView release];
     [classesOutlineView release];
+    [classesWithCount release];
     [super dealloc];
 }
 
@@ -31,12 +35,12 @@
     if (self.document) {
         [classesOutlineView sizeLastColumnToFit];
         [classesOutlineView setFloatsGroupRows:NO];
-        [self updateClassList];
+        [self showClassesWithObjectsOnly:NO];
         
-        [classesOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:0]
-                        byExtendingSelection:NO];
+        [self selectFirstClass];
     }
 }
+
 
 #pragma mark - NSOutlineViewDataSource
 
@@ -78,18 +82,30 @@
 
 #pragma mark - Public
 
-
-- (void)updateClassList {
-    if (classesWithCount) {
-        [classesWithCount release];
-    }
-    if (self.document) {
-        classesWithCount = [[self.document classesWithObjectCount] retain];
-    } else {
-        classesWithCount = [[NSDictionary dictionary] retain];
-    }
-    [classesOutlineView reloadData];
+- (void)selectFirstClass {
+    [classesOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:0]
+                    byExtendingSelection:NO];
 }
+
+- (void)selectClass:(NSString *)className {
+    NSUInteger index = [[self orderedClassNames] indexOfObject:className];
+    if (index == NSNotFound)
+        return;
+    [classesOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
+                    byExtendingSelection:NO];
+}
+
+- (NSString *)selectedClass {
+    NSInteger index = classesOutlineView.selectedRow;
+    if (index == -1)
+        return @"";
+    
+    if ([classesWithCount count] == 0)
+        return @"";
+    
+    return [[self orderedClassNames] objectAtIndex:index];
+}
+
 
 - (void)updateObjectList:(NSArray *)idfObjects {
     [objectsTextView setString:@""];
@@ -102,6 +118,24 @@
             [objectsTextView insertText:@"\n"];
         }
     }
+}
+
+- (void)showClassesWithObjectsOnly:(BOOL)show {
+    NSString *selectedClass = [self selectedClass];
+    
+    if (classesWithCount)
+        [classesWithCount release];
+
+    if (show)
+        classesWithCount = [[self.document onlyClassesWithObjectsWithObjectCount] retain];
+    else
+        classesWithCount = [[self.document allClassesWithObjectCount] retain];
+    [classesOutlineView reloadData];
+    
+    if ([[self orderedClassNames] indexOfObject:selectedClass] == NSNotFound)
+        [self selectFirstClass];
+    else
+        [self selectClass:selectedClass];
 }
 
 #pragma mark - Helpers

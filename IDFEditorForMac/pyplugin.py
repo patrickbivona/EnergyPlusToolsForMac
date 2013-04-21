@@ -10,7 +10,9 @@ accepted_classes = {
         eplus.FieldDefinition('N1', {'type': 'integer'}),
         eplus.FieldDefinition('N2', {'type': 'integer'}),
         eplus.FieldDefinition('A2', {'type': 'alpha'}),
-        eplus.FieldDefinition('A3', {'type': 'alpha'})])
+        eplus.FieldDefinition('A3', {'type': 'alpha'})]),
+    'Timestep': eplus.ClassDefinition('Timestep', [
+        eplus.FieldDefinition('N1', {'type': 'integer'})])
 }
 
 
@@ -19,7 +21,7 @@ class PyIdfDocument:
     def __init__(self):
         self.objs = []
 
-    def readFromFile_(self, path:str):
+    def readFromFile_(self, path: str):
         if not os.path.exists(path):
             return []
 
@@ -28,14 +30,22 @@ class PyIdfDocument:
         if len(errors) > 0:
             print(errors)
 
-    def writeToFile_(self, path:str):
+    def writeToFile_(self, path: str):
         parser = eplus.IdfParser()
         parser.write_file(self.objs, path)
 
     def objects(self) -> list:
         return self.objs
 
-    def classesWithObjectCount(self) -> dict:
+    def allClassesWithObjectCount(self) -> dict:
+        result = {}
+        for clazz in accepted_classes.keys():
+            result[clazz] = 0
+        for (clazz, count) in self.onlyClassesWithObjectsWithObjectCount().items():
+            result[clazz] = count
+        return result
+
+    def onlyClassesWithObjectsWithObjectCount(self) -> dict:
         result = {}
         for obj in self.objs:
             class_name = obj[0]

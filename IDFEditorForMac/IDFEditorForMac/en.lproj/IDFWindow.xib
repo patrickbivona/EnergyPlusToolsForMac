@@ -69,7 +69,7 @@
 													<reference key="NSNextResponder" ref="965622053"/>
 													<int key="NSvFlags">256</int>
 													<array class="NSMutableArray" key="NSSubviews"/>
-													<string key="NSFrameSize">{114, 454}</string>
+													<string key="NSFrameSize">{89, 454}</string>
 													<reference key="NSSuperview" ref="965622053"/>
 													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="472855018"/>
@@ -86,7 +86,7 @@
 													<array class="NSMutableArray" key="NSTableColumns">
 														<object class="NSTableColumn" id="193670289">
 															<string key="NSIdentifier">AutomaticTableColumnIdentifier.0</string>
-															<double key="NSWidth">111</double>
+															<double key="NSWidth">86</double>
 															<double key="NSMinWidth">16</double>
 															<double key="NSMaxWidth">1000</double>
 															<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -184,7 +184,7 @@
 													<float key="NSOutlineViewIndentationPerLevelKey">14</float>
 												</object>
 											</array>
-											<string key="NSFrame">{{1, 1}, {114, 454}}</string>
+											<string key="NSFrame">{{1, 1}, {89, 454}}</string>
 											<reference key="NSSuperview" ref="589410992"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="476853643"/>
@@ -221,7 +221,7 @@
 											<double key="NSPercent">0.99130434782608701</double>
 										</object>
 									</array>
-									<string key="NSFrameSize">{116, 456}</string>
+									<string key="NSFrameSize">{91, 456}</string>
 									<reference key="NSSuperview" ref="425400226"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="965622053"/>
@@ -237,7 +237,7 @@
 								</object>
 								<object class="NSScrollView" id="74394442">
 									<reference key="NSNextResponder" ref="425400226"/>
-									<int key="NSvFlags">256</int>
+									<int key="NSvFlags">260</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSClipView" id="984379049">
 											<reference key="NSNextResponder" ref="74394442"/>
@@ -265,7 +265,7 @@
 														<string>WebURLsWithTitlesPboardType</string>
 														<string>public.url</string>
 													</set>
-													<string key="NSFrameSize">{437, 454}</string>
+													<string key="NSFrameSize">{462, 454}</string>
 													<reference key="NSSuperview" ref="984379049"/>
 													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="595615131"/>
@@ -285,7 +285,7 @@
 															<nil key="NSDelegate"/>
 														</object>
 														<reference key="NSTextView" ref="526849936"/>
-														<double key="NSWidth">437</double>
+														<double key="NSWidth">462</double>
 														<int key="NSTCFlags">1</int>
 													</object>
 													<object class="NSTextViewSharedData" key="NSSharedData">
@@ -325,11 +325,11 @@
 													</object>
 													<int key="NSTVFlags">6</int>
 													<string key="NSMaxSize">{548, 10000000}</string>
-													<string key="NSMinize">{422, 454}</string>
+													<string key="NSMinize">{447, 454}</string>
 													<nil key="NSDelegate"/>
 												</object>
 											</array>
-											<string key="NSFrame">{{1, 1}, {422, 454}}</string>
+											<string key="NSFrame">{{1, 1}, {447, 454}}</string>
 											<reference key="NSSuperview" ref="74394442"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="526849936"/>
@@ -360,7 +360,7 @@
 										<object class="NSScroller" id="185402555">
 											<reference key="NSNextResponder" ref="74394442"/>
 											<int key="NSvFlags">256</int>
-											<string key="NSFrame">{{423, 1}, {15, 454}}</string>
+											<string key="NSFrame">{{448, 1}, {15, 454}}</string>
 											<reference key="NSSuperview" ref="74394442"/>
 											<reference key="NSWindow"/>
 											<string key="NSReuseIdentifierKey">_NS:83</string>
@@ -387,7 +387,7 @@
 											<double key="NSPercent">0.94565218687057495</double>
 										</object>
 									</array>
-									<string key="NSFrame">{{126, 0}, {439, 456}}</string>
+									<string key="NSFrame">{{101, 0}, {464, 456}}</string>
 									<reference key="NSSuperview" ref="425400226"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="984379049"/>
@@ -498,7 +498,7 @@
 								<object class="NSTextField" id="1013099382">
 									<reference key="NSNextResponder" ref="1057568161"/>
 									<int key="NSvFlags">266</int>
-									<string key="NSFrame">{{1, 0}, {111, 15}}</string>
+									<string key="NSFrame">{{1, 0}, {86, 15}}</string>
 									<reference key="NSSuperview" ref="1057568161"/>
 									<string key="NSAntiCompressionPriority">{250, 750}</string>
 									<bool key="NSEnabled">YES</bool>
@@ -523,7 +523,7 @@
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 								</object>
 							</array>
-							<string key="NSFrame">{{1, 0}, {111, 17}}</string>
+							<string key="NSFrame">{{1, 0}, {86, 17}}</string>
 						</object>
 						<reference key="destination" ref="1013099382"/>
 					</object>
@@ -740,6 +740,27 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/IDFWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSCollectionViewItem</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="imageView">NSImageView</string>
+						<string key="textField">NSTextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="imageView">
+							<string key="name">imageView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="textField">
+							<string key="name">textField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/NSCollectionViewItem.h</string>
 					</object>
 				</object>
 			</array>

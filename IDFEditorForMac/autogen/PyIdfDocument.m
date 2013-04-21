@@ -34,10 +34,10 @@
     return self;
 }
 
-- (NSDictionary *)classesWithObjectCount
+- (NSDictionary *)allClassesWithObjectCount
 {
     OBJP_LOCKGIL;
-    PyObject *pFunc = PyObject_GetAttrString(_py, "classesWithObjectCount");
+    PyObject *pFunc = PyObject_GetAttrString(_py, "allClassesWithObjectCount");
     OBJP_ERRCHECK(pFunc);
     
 
@@ -88,6 +88,26 @@
 
     
     NSArray * result = ObjP_list_p2o(pResult);
+    Py_DECREF(pResult);
+    OBJP_UNLOCKGIL;
+    return result;
+
+}
+
+- (NSDictionary *)onlyClassesWithObjectsWithObjectCount
+{
+    OBJP_LOCKGIL;
+    PyObject *pFunc = PyObject_GetAttrString(_py, "onlyClassesWithObjectsWithObjectCount");
+    OBJP_ERRCHECK(pFunc);
+    
+
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, NULL);
+
+    OBJP_ERRCHECK(pResult);
+    Py_DECREF(pFunc);
+
+    
+    NSDictionary * result = ObjP_dict_p2o(pResult);
     Py_DECREF(pResult);
     OBJP_UNLOCKGIL;
     return result;

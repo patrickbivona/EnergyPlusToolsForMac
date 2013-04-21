@@ -9,9 +9,10 @@
 }
 - (PyObject *)pyRef;
 - (id)init;
-- (NSDictionary *)classesWithObjectCount;
+- (NSDictionary *)allClassesWithObjectCount;
 - (NSArray *)objects;
 - (NSArray *)objectsOfClass:(NSString *)className;
+- (NSDictionary *)onlyClassesWithObjectsWithObjectCount;
 - (void)readFromFile:(NSString *)path;
 - (void)writeToFile:(NSString *)path;
 @end
