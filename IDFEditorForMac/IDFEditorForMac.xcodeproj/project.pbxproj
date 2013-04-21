@@ -80,7 +80,6 @@
 		CD9D9A2D16BFE748005896DE /* Document.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
 		CD9D9A3016BFE748005896DE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/IDFWindow.xib; sourceTree = "<group>"; };
 		CD9D9A3316BFE749005896DE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		CDB1BB4D1723D76300ED610D /* IDFEditorForMac copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "IDFEditorForMac copy-Info.plist"; path = "/Users/patrick/Development/Projects/EnergyPlusToolsForMac/IDFEditorForMac/IDFEditorForMac copy-Info.plist"; sourceTree = "<absolute>"; };
 		CDE99E2116D661A700BC9F5B /* IDFWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDFWindowController.h; sourceTree = "<group>"; };
 		CDE99E2216D661A700BC9F5B /* IDFWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDFWindowController.m; sourceTree = "<group>"; };
 		CDFE8C5616F762AC00A9D056 /* Python */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Python; path = build/Python; sourceTree = "<group>"; };
@@ -151,7 +150,6 @@
 				CD7C7E5E1722A2D6002B9765 /* IDFEditorForMacTests */,
 				CD9D9A1916BFE748005896DE /* Frameworks */,
 				CD9D9A1716BFE748005896DE /* Products */,
-				CDB1BB4D1723D76300ED610D /* IDFEditorForMac copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
