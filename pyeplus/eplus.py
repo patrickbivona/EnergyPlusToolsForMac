@@ -1,51 +1,32 @@
 import pyparsing as pp
-import re
 
 
 class IdfParser(object):
 
-    def parse(self, idf, allowed_classes):
-        """Returns a 2-tuple with the list of parsed objects and the list of parsing errors"""
+    def __init__(self):
+        self.comma = pp.Suppress(pp.Literal(','))
+        self.semicolon = pp.Suppress(pp.Literal(';'))
+        self.classname = pp.Word(pp.alphanums).setName('classname')
+        self.field_comment = pp.Suppress(pp.Literal('!-') + pp.restOfLine.setName('fieldcomment') + pp.LineEnd())
+        self.field = pp.Word(pp.alphanums + '. ').setName('field')
+        self.obj = self.classname + self.comma + \
+            pp.ZeroOrMore(self.field + self.comma + pp.Optional(self.field_comment)) + \
+            self.field + self.semicolon + pp.Optional(self.field_comment)
+        self.obj.setDebug()
+        self.objs = pp.ZeroOrMore(pp.Group(self.obj))
 
-        text_objects = idf.split(';')
-        objects = []
-        errors = []
-        for text_object in text_objects:
-            if text_object.strip():
-                (obj, err) = self._parse_object(text_object, allowed_classes)
-                if obj is not None:
-                    objects.append(obj)
-                if err is not None:
-                    errors.append(err)
-        return (objects, errors)
+    def parse(self, idf):
+        """Returns a list of parsed objects"""
+        try:
+            return self.objs.parseString(idf).asList()
+        except pp.ParseException as e:
+            print(e)
+            return []
 
-    def _parse_object(self, obj, known_classes):
-        """Returns a 2-tuple with the parsed object (or None) and a parsing error (or None)"""
-
-        items = obj.strip(' ;').split(',')
-
-        class_name = items[0].strip(' \n')
-        if not class_name:
-            return (None, None)
-
-        known_class = known_classes.get(class_name)
-        if known_class is None:
-            return (None, "Missing definition for object of class " + class_name)
-
-        obj = [k.strip(' \n') for k in items]
-        valid = known_class.validate_object(obj)
-        if valid is None:
-            return (obj, None)
-        else:
-            return (None, valid)
-
-    def parse_file(self, filename, allowed_classes):
-        """Returns a 2-tuple with the list of parsed objects and the list of parsing errors"""
-
-        f = open(filename, 'r')
-        content = f.read()
-        f.close()
-        return self.parse(content, allowed_classes)
+    def parse_file(self, filename):
+        """Returns a list of objects parsed from the given file"""
+        with open(filename, 'r') as f:
+            return self.parse(f.read())
 
     def write_file(self, objects, filename):
         with open(filename, 'w') as f:

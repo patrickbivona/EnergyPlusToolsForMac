@@ -12,7 +12,7 @@
 @implementation IDFWindowController
 
 @synthesize classesOutlineView;
-@synthesize objectsTextView;
+@synthesize objectsTable;
 
 - (id)init {
     self = [super initWithWindowNibName:@"IDFWindow" owner:self];
@@ -23,7 +23,7 @@
 }
 
 - (void)dealloc {
-    [objectsTextView release];
+    [objectsTable release];
     [classesOutlineView release];
     [classesWithCount release];
     [super dealloc];
@@ -72,12 +72,38 @@
     return result;
 }
 
+
 #pragma mark - NSOutlineViewDelegate
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification {
-    NSString *className = [[self orderedClassNames] objectAtIndex:classesOutlineView.selectedRow];
-    NSArray *obj = [self.document idfObjectsOfClass:className];
-    [self updateObjectList:obj];
+    [objectsTable reloadData];
+}
+
+
+#pragma mark - MBTableGridDataSource
+
+- (NSUInteger)numberOfRowsInTableGrid:(MBTableGrid *)aTableGrid {
+    NSArray *objs = [self.document idfObjectsOfClass:[self selectedClass]];
+    if ([objs count] == 0)
+        return 1;
+    else
+        return [[objs objectAtIndex:0] count];
+}
+
+- (NSUInteger)numberOfColumnsInTableGrid:(MBTableGrid *)aTableGrid {
+    NSArray *objs = [self.document idfObjectsOfClass:[self selectedClass]];
+    if ([objs count] == 0)
+        return 1;
+    else
+        return [objs count];
+}
+
+- (id)tableGrid:(MBTableGrid *)aTableGrid objectValueForColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex {
+    NSArray *objs = [self.document idfObjectsOfClass:[self selectedClass]];
+    if ([objs count] == 0)
+        return @"";
+    else
+        return [[objs objectAtIndex:columnIndex] objectAtIndex:rowIndex];
 }
 
 #pragma mark - Public
@@ -106,19 +132,6 @@
     return [[self orderedClassNames] objectAtIndex:index];
 }
 
-
-- (void)updateObjectList:(NSArray *)idfObjects {
-    [objectsTextView setString:@""];
-    
-    for (NSArray *idfObject in idfObjects) {
-        if ([idfObject count] > 0) {
-            NSMutableString *obj = [[idfObject componentsJoinedByString:@","] mutableCopy];
-            [obj appendString:@";"];
-            [objectsTextView insertText:obj];
-            [objectsTextView insertText:@"\n"];
-        }
-    }
-}
 
 - (void)showClassesWithObjectsOnly:(BOOL)show {
     NSString *selectedClass = [self selectedClass];

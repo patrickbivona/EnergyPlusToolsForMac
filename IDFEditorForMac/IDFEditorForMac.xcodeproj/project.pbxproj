@@ -9,6 +9,18 @@
 /* Begin PBXBuildFile section */
 		CD31416D16F7EFF500E39598 /* Python in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFE8C5616F762AC00A9D056 /* Python */; };
 		CD31416F16F7F00600E39598 /* Python in CopyFiles */ = {isa = PBXBuildFile; fileRef = CDFE8C5616F762AC00A9D056 /* Python */; };
+		CD32AE011725820700B3A857 /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADF61725820700B3A857 /* MBTableGrid.m */; };
+		CD32AE021725820700B3A857 /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADF61725820700B3A857 /* MBTableGrid.m */; };
+		CD32AE031725820700B3A857 /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADF81725820700B3A857 /* MBTableGridCell.m */; };
+		CD32AE041725820700B3A857 /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADF81725820700B3A857 /* MBTableGridCell.m */; };
+		CD32AE051725820700B3A857 /* MBTableGridContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADFA1725820700B3A857 /* MBTableGridContentView.m */; };
+		CD32AE061725820700B3A857 /* MBTableGridContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADFA1725820700B3A857 /* MBTableGridContentView.m */; };
+		CD32AE071725820700B3A857 /* MBTableGridController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADFC1725820700B3A857 /* MBTableGridController.m */; };
+		CD32AE081725820700B3A857 /* MBTableGridController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADFC1725820700B3A857 /* MBTableGridController.m */; };
+		CD32AE091725820700B3A857 /* MBTableGridHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADFE1725820700B3A857 /* MBTableGridHeaderCell.m */; };
+		CD32AE0A1725820700B3A857 /* MBTableGridHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32ADFE1725820700B3A857 /* MBTableGridHeaderCell.m */; };
+		CD32AE0B1725820700B3A857 /* MBTableGridHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32AE001725820700B3A857 /* MBTableGridHeaderView.m */; };
+		CD32AE0C1725820700B3A857 /* MBTableGridHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD32AE001725820700B3A857 /* MBTableGridHeaderView.m */; };
 		CD62C67C1723EDAA004F488B /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD62C67B1723EDAA004F488B /* OCMock.framework */; };
 		CD62C6801723EDFC004F488B /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD62C67F1723EDFC004F488B /* OCMock.framework */; };
 		CD7C7E5C1722A2D6002B9765 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD7C7E3D1722A0C9002B9765 /* SenTestingKit.framework */; };
@@ -54,6 +66,18 @@
 /* Begin PBXFileReference section */
 		CD31416116F7677500E39598 /* ObjP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjP.h; sourceTree = "<group>"; };
 		CD31416216F7677500E39598 /* ObjP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjP.m; sourceTree = "<group>"; };
+		CD32ADF51725820700B3A857 /* MBTableGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTableGrid.h; sourceTree = "<group>"; };
+		CD32ADF61725820700B3A857 /* MBTableGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTableGrid.m; sourceTree = "<group>"; };
+		CD32ADF71725820700B3A857 /* MBTableGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTableGridCell.h; sourceTree = "<group>"; };
+		CD32ADF81725820700B3A857 /* MBTableGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTableGridCell.m; sourceTree = "<group>"; };
+		CD32ADF91725820700B3A857 /* MBTableGridContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTableGridContentView.h; sourceTree = "<group>"; };
+		CD32ADFA1725820700B3A857 /* MBTableGridContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTableGridContentView.m; sourceTree = "<group>"; };
+		CD32ADFB1725820700B3A857 /* MBTableGridController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTableGridController.h; sourceTree = "<group>"; };
+		CD32ADFC1725820700B3A857 /* MBTableGridController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTableGridController.m; sourceTree = "<group>"; };
+		CD32ADFD1725820700B3A857 /* MBTableGridHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTableGridHeaderCell.h; sourceTree = "<group>"; };
+		CD32ADFE1725820700B3A857 /* MBTableGridHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTableGridHeaderCell.m; sourceTree = "<group>"; };
+		CD32ADFF1725820700B3A857 /* MBTableGridHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTableGridHeaderView.h; sourceTree = "<group>"; };
+		CD32AE001725820700B3A857 /* MBTableGridHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTableGridHeaderView.m; sourceTree = "<group>"; };
 		CD62C67B1723EDAA004F488B /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMock.framework; sourceTree = "<group>"; };
 		CD62C67F1723EDFC004F488B /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMock.framework; sourceTree = "<group>"; };
 		CD7C7E3D1722A0C9002B9765 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -119,6 +143,26 @@
 			path = autogen;
 			sourceTree = "<group>";
 		};
+		CD32ADF41725820700B3A857 /* MBTableGrid */ = {
+			isa = PBXGroup;
+			children = (
+				CD32ADF51725820700B3A857 /* MBTableGrid.h */,
+				CD32ADF61725820700B3A857 /* MBTableGrid.m */,
+				CD32ADF71725820700B3A857 /* MBTableGridCell.h */,
+				CD32ADF81725820700B3A857 /* MBTableGridCell.m */,
+				CD32ADF91725820700B3A857 /* MBTableGridContentView.h */,
+				CD32ADFA1725820700B3A857 /* MBTableGridContentView.m */,
+				CD32ADFB1725820700B3A857 /* MBTableGridController.h */,
+				CD32ADFC1725820700B3A857 /* MBTableGridController.m */,
+				CD32ADFD1725820700B3A857 /* MBTableGridHeaderCell.h */,
+				CD32ADFE1725820700B3A857 /* MBTableGridHeaderCell.m */,
+				CD32ADFF1725820700B3A857 /* MBTableGridHeaderView.h */,
+				CD32AE001725820700B3A857 /* MBTableGridHeaderView.m */,
+			);
+			name = MBTableGrid;
+			path = IDFEditorForMac/MBTableGrid;
+			sourceTree = "<group>";
+		};
 		CD7C7E5E1722A2D6002B9765 /* IDFEditorForMacTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +188,7 @@
 		CD9D9A0B16BFE748005896DE = {
 			isa = PBXGroup;
 			children = (
+				CD32ADF41725820700B3A857 /* MBTableGrid */,
 				CD8FAA4216F8AF61007A3ED0 /* py */,
 				CD31416016F766B200E39598 /* autogen */,
 				CD9D9A2016BFE748005896DE /* IDFEditorForMac */,
@@ -321,6 +366,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD7C7E661722A2D6002B9765 /* IDFEditorForMacTests.m in Sources */,
+				CD32AE021725820700B3A857 /* MBTableGrid.m in Sources */,
+				CD32AE041725820700B3A857 /* MBTableGridCell.m in Sources */,
+				CD32AE061725820700B3A857 /* MBTableGridContentView.m in Sources */,
+				CD32AE081725820700B3A857 /* MBTableGridController.m in Sources */,
+				CD32AE0A1725820700B3A857 /* MBTableGridHeaderCell.m in Sources */,
+				CD32AE0C1725820700B3A857 /* MBTableGridHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +384,12 @@
 				CD9D9A2E16BFE748005896DE /* Document.m in Sources */,
 				CDE99E2316D661A700BC9F5B /* IDFWindowController.m in Sources */,
 				CD7E3F48170C825C0051CE1C /* PyIdfDocument.m in Sources */,
+				CD32AE011725820700B3A857 /* MBTableGrid.m in Sources */,
+				CD32AE031725820700B3A857 /* MBTableGridCell.m in Sources */,
+				CD32AE051725820700B3A857 /* MBTableGridContentView.m in Sources */,
+				CD32AE071725820700B3A857 /* MBTableGridController.m in Sources */,
+				CD32AE091725820700B3A857 /* MBTableGridHeaderCell.m in Sources */,
+				CD32AE0B1725820700B3A857 /* MBTableGridHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

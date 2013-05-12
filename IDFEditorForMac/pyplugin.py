@@ -24,11 +24,8 @@ class PyIdfDocument:
     def readFromFile_(self, path: str):
         if not os.path.exists(path):
             return []
-
         parser = eplus.IdfParser()
-        (self.objs, errors) = parser.parse_file(path, accepted_classes)
-        if len(errors) > 0:
-            print(errors)
+        self.objs = parser.parse_file(path)
 
     def writeToFile_(self, path: str):
         parser = eplus.IdfParser()

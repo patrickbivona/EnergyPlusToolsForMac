@@ -7,22 +7,21 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MBTableGrid.h"
 
-@interface IDFWindowController : NSWindowController <NSOutlineViewDataSource, NSOutlineViewDelegate> {
+@interface IDFWindowController : NSWindowController <NSOutlineViewDataSource, NSOutlineViewDelegate, MBTableGridDataSource> {
     IBOutlet NSOutlineView *classesOutlineView;
-    IBOutlet NSTextView *objectsTextView;
+    IBOutlet MBTableGrid *objectsTable;
     
     NSDictionary *classesWithCount;
 }
 
 @property (retain) NSOutlineView *classesOutlineView;
-@property (retain) NSTextView *objectsTextView;
+@property (retain) MBTableGrid *objectsTable;
 
 - (void)selectFirstClass;
 - (void)selectClass:(NSString *)className;
 - (NSString *)selectedClass;
-
-- (void)updateObjectList:(NSArray *)idfObjects;
 
 - (void)showClassesWithObjectsOnly:(BOOL)show;
 

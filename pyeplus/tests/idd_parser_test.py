@@ -27,23 +27,23 @@ class DataDictionaryParsingTestCase(unittest.TestCase):
         class_def = self.idd_parser.parse(idd)['Class1']
         self.assertField(class_def.fields[0], 'N1', 'Field1', 'integer')
 
-    def test_recognises_single_class_definition(self):
-        class_defs = self.idd_parser.parse_file(test.path_to_datafile('simple_class.idd'))
+    # def test_recognises_single_class_definition(self):
+    #     class_defs = self.idd_parser.parse_file(test.path_to_datafile('simple_class.idd'))
 
-        (objects, errors) = self.idf_parser.parse_file(test.path_to_datafile('simple_object.idf'), class_defs)
+    #     (objects, errors) = self.idf_parser.parse_file(test.path_to_datafile('simple_object.idf'), class_defs)
 
-        expected = ['Class value1 value2 value3'.split(' ')]
-        self.assertEqual(errors, [])
-        self.assertEqual(objects, expected)
+    #     expected = ['Class value1 value2 value3'.split(' ')]
+    #     self.assertEqual(errors, [])
+    #     self.assertEqual(objects, expected)
 
-    def test_recognises_multiple_class_definitions(self):
-        definitions = self.idd_parser.parse_file(test.path_to_datafile('multiple_classes.idd'))
+    # def test_recognises_multiple_class_definitions(self):
+    #     definitions = self.idd_parser.parse_file(test.path_to_datafile('multiple_classes.idd'))
 
-        (objects, errors) = self.idf_parser.parse_file(test.path_to_datafile('multiple_objects.idf'), definitions)
+    #     (objects, errors) = self.idf_parser.parse_file(test.path_to_datafile('multiple_objects.idf'), definitions)
 
-        expected = ['Class1 alpha1 alpha2 alpha3'.split(' '), 'Class2 1 2 alpha3'.split(' ')]
-        self.assertEqual(errors, [])
-        self.assertEqual(objects, expected)
+    #     expected = ['Class1 alpha1 alpha2 alpha3'.split(' '), 'Class2 1 2 alpha3'.split(' ')]
+    #     self.assertEqual(errors, [])
+    #     self.assertEqual(objects, expected)
 
     def assertField(self, field, expected_id, expected_name, expected_type):
         self.assertEquals(field.id, expected_id)
