@@ -7,7 +7,7 @@ class DataDictionaryParsingTestCase(unittest.TestCase):
 
     def setUp(self):
         self.idd_parser = eplus.DataDictionaryParser()
-        self.idf_parser = eplus.IdfParser()
+        # self.idf_parser = eplus.IdfParser()
 
     def test_accepts_alpha_fields(self):
         idd = """

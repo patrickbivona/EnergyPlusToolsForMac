@@ -3,7 +3,8 @@ import pyparsing as pp
 
 class IdfParser(object):
 
-    def __init__(self):
+    def __init__(self, class_definitions):
+        self.defs = class_definitions
         self.comma = pp.Suppress(pp.Literal(','))
         self.semicolon = pp.Suppress(pp.Literal(';'))
         self.classname = pp.Word(pp.alphanums).setName('classname')
@@ -15,13 +16,26 @@ class IdfParser(object):
         self.obj.setDebug()
         self.objs = pp.ZeroOrMore(pp.Group(self.obj))
 
+        self.errors = []
+
     def parse(self, idf):
         """Returns a list of parsed objects"""
+        result = []
+        self.errors = []
         try:
-            return self.objs.parseString(idf).asList()
+            objects = self.objs.parseString(idf).asList()
+            for o in objects:
+                if self.defs.supports_object(o):
+                    result.append(o)
+                else:
+                    self.errors.append('Found unsupported object')
+            return result
         except pp.ParseException as e:
             print(e)
             return []
+
+    def errors(self):
+        self.errors
 
     def parse_file(self, filename):
         """Returns a list of objects parsed from the given file"""
@@ -32,6 +46,22 @@ class IdfParser(object):
         with open(filename, 'w') as f:
             for obj in objects:
                 f.write(','.join(obj) + ';\n')
+
+
+class ClassDefinitions(object):
+
+    def __init__(self):
+        self.classnames = []
+
+    def add_class(self, classname):
+        if classname not in self.classnames:
+            self.classnames.append(classname)
+
+    def supports_object(self, object):
+        if object is None or len(object) < 1:
+            return False
+        else:
+            return object[0] in self.classnames
 
 
 class ClassDefinition(object):

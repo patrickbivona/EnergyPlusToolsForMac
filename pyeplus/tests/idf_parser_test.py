@@ -7,7 +7,9 @@ import tests.harness as test
 class IdfParserTest(unittest.TestCase):
 
     def setUp(self):
-        self.p = eplus.IdfParser()
+        self.defs = eplus.ClassDefinitions()
+        self.defs.add_class('Class')
+        self.p = eplus.IdfParser(self.defs)
 
     def test_parses_single_inline_object_without_spaces(self):
         idf = "Class,value1,value2,value3;"
@@ -28,24 +30,37 @@ class IdfParserTest(unittest.TestCase):
         self._assert_parsing(idf, expected)
 
     def test_accepts_field_comments(self):
-        idf = """class,
+        idf = """Class,
         field1, !- comment1, with ; delimeters for objects
         field2, !- comment2
         field3; !- comment3
         """
-        self._assert_parsing(idf, [['class', 'field1', 'field2', 'field3']])
+        self._assert_parsing(idf, [['Class', 'field1', 'field2', 'field3']])
 
     def test_accepts_multiwords_string_fields(self):
-        idf = """class,field with more than 1 word;"""
-        self._assert_parsing(idf, [['class', 'field with more than 1 word']])
+        idf = """Class,field with more than 1 word;"""
+        self._assert_parsing(idf, [['Class', 'field with more than 1 word']])
 
     def test_accepts_integer_fields(self):
-        idf = """class,34;"""
-        self._assert_parsing(idf, [['class', '34']])
+        idf = """Class,34;"""
+        self._assert_parsing(idf, [['Class', '34']])
 
     def test_accepts_float_fields(self):
-        idf = """class,42.6;"""
-        self._assert_parsing(idf, [['class', '42.6']])
+        idf = """Class,42.6;"""
+        self._assert_parsing(idf, [['Class', '42.6']])
+
+    #
+    # Handling of invalid content
+    #
+
+    def test_parsing_skips_objects_of_unknown_classes(self):
+        objs = self.p.parse("Class,field1;\nclass2,field2;")
+        self.assertEquals(objs, [['Class', 'field1']])
+        self.assertEquals(self.p.errors, ['Found unsupported object'])
+
+    #
+    # File IO
+    #
 
     def test_parses_from_file(self):
         expected = ['Class value1 value2 value3'.split(' ')]
