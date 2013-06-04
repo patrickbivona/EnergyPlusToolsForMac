@@ -135,6 +135,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		[contentScrollView setHasHorizontalScroller:YES];
 		[contentScrollView setHasVerticalScroller:YES];
 		[contentScrollView setAutohidesScrollers:YES];
+        [contentScrollView setBackgroundColor:[NSColor grayColor]];
 		[self addSubview:contentScrollView];
 		
 		// We want to synchronize the scroll views
@@ -829,12 +830,25 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 - (void)reloadData
 {
 	// Update the content view's size
-	NSUInteger lastColumn = [self numberOfColumns]-1;
-	NSUInteger lastRow = [self numberOfRows]-1;
-	NSRect bottomRightCellFrame = [contentView frameOfCellAtColumn:lastColumn row:lastRow];
+	NSInteger lastColumn = [self numberOfColumns]-1;
+	NSInteger lastRow = [self numberOfRows]-1;
 	
-	NSRect contentRect = NSMakeRect([contentView frame].origin.x, [contentView frame].origin.y, NSMaxX(bottomRightCellFrame), NSMaxY(bottomRightCellFrame));
-	[contentView setFrameSize:contentRect.size];
+    NSRect contentRect;
+    
+    if (lastColumn >= 0) {
+        NSRect bottomRightCellFrame = [contentView frameOfCellAtColumn:lastColumn row:lastRow];
+        contentRect = NSMakeRect([contentView frame].origin.x,
+                                 [contentView frame].origin.y,
+                                 NSMaxX(bottomRightCellFrame),
+                                 NSMaxY(bottomRightCellFrame));
+    } else {
+        NSRect lastRowRect = [contentView rectOfRow:lastRow];
+        contentRect = NSMakeRect([contentView frame].origin.x,
+                                 [contentView frame].origin.y,
+                                 0,
+                                 NSMaxY(lastRowRect));
+    }
+    [contentView setFrameSize:contentRect.size];
 	
 	// Update the column header view's size
 	NSRect columnHeaderFrame = [columnHeaderView frame];
@@ -1030,20 +1044,15 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	if ([self needsToDrawRect:aRect]) {
 		NSColor *topGradientTop = [NSColor colorWithDeviceWhite:0.91 alpha:1.0];
 		NSColor *topGradientBottom = [NSColor colorWithDeviceWhite:0.89 alpha:1.0];
-		NSColor *bottomGradientTop = [NSColor colorWithDeviceWhite:0.85 alpha:1.0];
-		NSColor *bottomGradientBottom = [NSColor colorWithDeviceWhite:0.83 alpha:1.0];
 		NSColor *topColor = [NSColor colorWithDeviceWhite:0.95 alpha:1.0];
 		NSColor *borderColor = [NSColor colorWithDeviceWhite:0.65 alpha:1.0];
 		
 		NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
-		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
 		
-		NSRect topRect = NSMakeRect(NSMinX(aRect), 0, NSWidth(aRect), NSHeight(aRect)/2);
-		NSRect bottomRect = NSMakeRect(NSMinX(aRect), NSMidY(aRect)-0.5, NSWidth(aRect), NSHeight(aRect)/2+0.5);
+		NSRect topRect = NSMakeRect(NSMinX(aRect), 0, NSWidth(aRect), NSHeight(aRect));
 		
 		// Draw the gradients
 		[topGradient drawInRect:topRect angle:90.0];
-		[bottomGradient drawInRect:bottomRect angle:90.0];
 		
 		// Draw the top bevel line
 		NSRect topLine = NSMakeRect(NSMinX(aRect), NSMinY(aRect), NSWidth(aRect), 1.0);
@@ -1056,7 +1065,6 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		NSRectFill(bottomLine);
 		
 		[topGradient release];
-		[bottomGradient release];
 	}
 }
 
@@ -1065,20 +1073,16 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	if ([self needsToDrawRect:aRect]) {
 		NSColor *topGradientTop = [NSColor colorWithDeviceWhite:0.91 alpha:1.0];
 		NSColor *topGradientBottom = [NSColor colorWithDeviceWhite:0.89 alpha:1.0];
-		NSColor *bottomGradientTop = [NSColor colorWithDeviceWhite:0.85 alpha:1.0];
-		NSColor *bottomGradientBottom = [NSColor colorWithDeviceWhite:0.83 alpha:1.0];
 		NSColor *sideColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.4];
 		NSColor *borderColor = [NSColor colorWithDeviceWhite:0.65 alpha:1.0];
 		
 		NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
-		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
 	
-		NSRect leftRect = NSMakeRect(NSMinX(aRect), NSMinY(aRect), NSWidth(aRect)/2, NSHeight(aRect));
+		NSRect leftRect = NSMakeRect(NSMinX(aRect), NSMinY(aRect), NSWidth(aRect), NSHeight(aRect));
 		NSRect rightRect = NSMakeRect(NSMidX(aRect)-0.5, NSMinY(aRect), NSWidth(aRect)/2+0.5, NSHeight(aRect));
 		
 		// Draw the gradients
 		[topGradient drawInRect:leftRect angle:0.0];
-		[bottomGradient drawInRect:rightRect angle:0.0];
 		
 		// Draw the left bevel line
 		NSRect leftLine = NSMakeRect(NSMinX(aRect), NSMinY(aRect), 1.0, NSHeight(aRect));
@@ -1091,7 +1095,6 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		NSRectFill(rightLine);
 		
 		[topGradient release];
-		[bottomGradient release];
 	}
 }
 
@@ -1100,22 +1103,17 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	if ([self needsToDrawRect:aRect]) {
 		NSColor *topGradientTop = [NSColor colorWithDeviceWhite:0.91 alpha:1.0];
 		NSColor *topGradientBottom = [NSColor colorWithDeviceWhite:0.89 alpha:1.0];
-		NSColor *bottomGradientTop = [NSColor colorWithDeviceWhite:0.85 alpha:1.0];
-		NSColor *bottomGradientBottom = [NSColor colorWithDeviceWhite:0.83 alpha:1.0];
 		NSColor *topColor = [NSColor colorWithDeviceWhite:0.95 alpha:1.0];
 		NSColor *sideColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.4];
 		NSColor *borderColor = [NSColor colorWithDeviceWhite:0.65 alpha:1.0];
 		
 		NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
-		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
 		
 		// Divide the frame in two
 		NSRect mainRect = aRect;
-		NSRect bottomRightRect = NSMakeRect(NSMidX(aRect)-0.5, NSMidY(aRect)-0.5, NSWidth(aRect)/2, NSHeight(aRect)/2+0.5);
 		
 		// Draw the gradients
 		[topGradient drawInRect:mainRect angle:90.0];
-		[bottomGradient drawInRect:bottomRightRect angle:90.0];
 		
 		// Draw the top bevel line
 		NSRect topLine = NSMakeRect(NSMinX(aRect), NSMinY(aRect), NSWidth(aRect), 1.0);
@@ -1137,7 +1135,6 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		NSRectFill(bottomLine);
 		
 		[topGradient release];
-		[bottomGradient release];
 	}
 }
 

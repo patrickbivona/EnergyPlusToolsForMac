@@ -57,6 +57,7 @@
 - (id)initWithFrame:(NSRect)frameRect
 {
 	if(self = [super initWithFrame:frameRect]) {
+        
 		mouseDownColumn = NSNotFound;
 		mouseDownRow = NSNotFound;
 		
@@ -87,8 +88,11 @@
 }
 
 - (void)drawRect:(NSRect)rect
-{	
+{
 	NSUInteger numberOfColumns = [[self tableGrid] numberOfColumns];
+    if (numberOfColumns == 0)
+        return;
+    
 	NSUInteger numberOfRows = [[self tableGrid] numberOfRows];
 	
 	NSUInteger firstColumn = NSNotFound;
@@ -482,7 +486,7 @@
 
 - (NSRect)rectOfColumn:(NSUInteger)columnIndex
 {
-	NSRect rect = NSMakeRect(0, 0, 60, [self frame].size.height);
+	NSRect rect = NSMakeRect(0, 0, 100, [self frame].size.height);
 	//rect.origin.x += 60.0 * columnIndex;
 	
 	NSUInteger i = 0;

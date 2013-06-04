@@ -36,9 +36,16 @@
         [classesOutlineView sizeLastColumnToFit];
         [classesOutlineView setFloatsGroupRows:NO];
         [self showClassesWithObjectsOnly:NO];
-        
         [self selectFirstClass];
     }
+}
+
+- (IBAction)selectedNewObject:(id)sender {
+    NSString *class = [self selectedClass];
+    [[self document] addEmptyObject:class];
+    [classesOutlineView reloadData];
+    [self selectClass:class];
+    [objectsTable reloadData];
 }
 
 
@@ -83,19 +90,12 @@
 #pragma mark - MBTableGridDataSource
 
 - (NSUInteger)numberOfRowsInTableGrid:(MBTableGrid *)aTableGrid {
-    NSArray *objs = [self.document idfObjectsOfClass:[self selectedClass]];
-    if ([objs count] == 0)
-        return 1;
-    else
-        return [[objs objectAtIndex:0] count];
+    return [[self.document fieldsOfClass:[self selectedClass]] count];
 }
 
 - (NSUInteger)numberOfColumnsInTableGrid:(MBTableGrid *)aTableGrid {
     NSArray *objs = [self.document idfObjectsOfClass:[self selectedClass]];
-    if ([objs count] == 0)
-        return 1;
-    else
-        return [objs count];
+    return [objs count];
 }
 
 - (id)tableGrid:(MBTableGrid *)aTableGrid objectValueForColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex {
@@ -103,7 +103,30 @@
     if ([objs count] == 0)
         return @"";
     else
-        return [[objs objectAtIndex:columnIndex] objectAtIndex:rowIndex];
+        return [[objs objectAtIndex:columnIndex] objectAtIndex:rowIndex+1];
+}
+
+- (void)tableGrid:(MBTableGrid *)aTableGrid setObjectValue:(id)anObject forColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex {
+    NSArray *obj = [self.document objectOfClass:[self selectedClass] atIndex:columnIndex];
+
+    NSMutableArray *mobj = [NSMutableArray arrayWithArray:obj];
+    [mobj replaceObjectAtIndex:rowIndex+1 withObject:anObject];
+
+    [self.document replaceObjectAtIndex:columnIndex withObject:mobj];
+    
+    [objectsTable reloadData];
+}
+
+- (NSString *)tableGrid:(MBTableGrid *)aTableGrid headerStringForColumn:(NSUInteger)columnIndex {
+    return [NSString stringWithFormat:@"Obj %li", (unsigned long)columnIndex + 1, nil];
+}
+
+- (NSString *)tableGrid:(MBTableGrid *)aTableGrid headerStringForRow:(NSUInteger)rowIndex {
+    NSArray *fieldNames = [self.document fieldsOfClass:[self selectedClass]];
+    if ([fieldNames count] == 0)
+        return @"";
+    else
+        return [fieldNames objectAtIndex:rowIndex];
 }
 
 #pragma mark - Public

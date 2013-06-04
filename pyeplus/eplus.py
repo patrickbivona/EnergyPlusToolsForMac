@@ -28,7 +28,7 @@ class IdfParser(object):
                 if self.defs.supports_object(o):
                     result.append(o)
                 else:
-                    self.errors.append('Found unsupported object')
+                    self.errors.append('Found unsupported object: ' + ','.join(o) + ';')
             return result
         except pp.ParseException as e:
             print(e)
@@ -50,23 +50,28 @@ class IdfParser(object):
 
 class ClassDefinitions(object):
 
-    def __init__(self):
-        self.classnames = []
+    def __init__(self, defs={}):
+        self.class_defs = defs
 
-    def add_class(self, classname):
-        if classname not in self.classnames:
-            self.classnames.append(classname)
+    def add_class_def(self, class_def):
+        self.class_defs[class_def.name] = class_def
+
+    def class_names(self):
+        return self.class_defs.keys()
+
+    def class_def(self, class_name):
+        return self.class_defs[class_name]
 
     def supports_object(self, object):
         if object is None or len(object) < 1:
             return False
         else:
-            return object[0] in self.classnames
+            return object[0] in self.class_defs
 
 
 class ClassDefinition(object):
 
-    def __init__(self, name=None, fields=[]):
+    def __init__(self, name, fields=[]):
         self.name = name
         self.fields = fields
 
@@ -89,6 +94,12 @@ class ClassDefinition(object):
             if not field_definition.accepts(field_value):
                 return "Invalid value %s for field %s" % (field_value, field_definition.id)
         return None
+
+    def field_names(self):
+        return [field.attributes['field'] for field in self.fields]
+
+    def field_count(self):
+        return len(self.fields)
 
 
 class FieldDefinition(object):
@@ -136,12 +147,6 @@ classs = class_name.setResultsName("class_name") + comma + pp.OneOrMore(field_de
 classes = pp.ZeroOrMore(pp.Group(classs))
 
 
-class ClassDefinitionReader(object):
-
-    def definitions(self):
-        return []
-
-
 class DataDictionaryParser(object):
     def __init__(self):
         pass
@@ -163,5 +168,4 @@ class DataDictionaryParser(object):
         class_def = ClassDefinition(raw_def.class_name, [])
         for raw_field in raw_def.fields:
             class_def.add_field(FieldDefinition(raw_field.id, raw_field[1]))
-        print(class_def)
         return class_def

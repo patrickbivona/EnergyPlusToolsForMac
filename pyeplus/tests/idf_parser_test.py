@@ -8,7 +8,7 @@ class IdfParserTest(unittest.TestCase):
 
     def setUp(self):
         self.defs = eplus.ClassDefinitions()
-        self.defs.add_class('Class')
+        self.defs.add_class_def(eplus.ClassDefinition('Class'))
         self.p = eplus.IdfParser(self.defs)
 
     def test_parses_single_inline_object_without_spaces(self):
@@ -16,7 +16,7 @@ class IdfParserTest(unittest.TestCase):
         expected = ['Class value1 value2 value3'.split(' ')]
         self._assert_parsing(idf, expected)
 
-    def test_parses_single_inline_object_with_spaces_and_cr(self):
+    def test_parses_single_inline_object_with_spaces_and_return(self):
         idf = "  \n   Class, value1, \n value2, value3;"
         expected = ['Class value1 value2 value3'.split(' ')]
         self._assert_parsing(idf, expected)
@@ -54,9 +54,9 @@ class IdfParserTest(unittest.TestCase):
     #
 
     def test_parsing_skips_objects_of_unknown_classes(self):
-        objs = self.p.parse("Class,field1;\nclass2,field2;")
+        objs = self.p.parse("Class,field1;\nClass2,field2;")
         self.assertEquals(objs, [['Class', 'field1']])
-        self.assertEquals(self.p.errors, ['Found unsupported object'])
+        self.assertEquals(self.p.errors, ['Found unsupported object: Class2,field2;'])
 
     #
     # File IO

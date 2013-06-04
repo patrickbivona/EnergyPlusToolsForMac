@@ -22,9 +22,14 @@
 
 - (NSArray *)idfObjects;
 - (NSArray *)idfObjectsOfClass:(NSString *)className;
-
+- (NSArray *)fieldsOfClass:(NSString *)className;
+- (NSArray *)objectOfClass:(NSString *)className atIndex:(NSUInteger)index;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(NSArray *)obj;
+    
 - (NSDictionary *)allClassesWithObjectCount;
 - (NSDictionary *)onlyClassesWithObjectsWithObjectCount;
+
+- (void)addEmptyObject:(NSString *)className;
 
 - (IBAction)selectedShowClassesWithObjectsOnly:(id)sender;
 

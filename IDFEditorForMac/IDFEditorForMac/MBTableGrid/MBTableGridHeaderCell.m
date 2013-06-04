@@ -80,12 +80,15 @@
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-	NSFont *font = [NSFont labelFontOfSize:[NSFont labelFontSize]];
+	NSFont *font = [NSFont labelFontOfSize:[NSFont smallSystemFontSize]];
 	NSColor *color = [NSColor controlTextColor];
 	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, color, NSForegroundColorAttributeName, nil];
 	NSAttributedString *string = [[NSAttributedString alloc] initWithString:[self stringValue] attributes:attributes];
 	
-	NSRect textFrame = NSMakeRect(cellFrame.origin.x + (cellFrame.size.width-[string size].width)/2, cellFrame.origin.y + (cellFrame.size.height - [string size].height)/2, [string size].width, [string size].height);
+	NSRect textFrame = NSMakeRect(cellFrame.origin.x + 5,
+                                  cellFrame.origin.y + (cellFrame.size.height - [string size].height)/2,
+                                  [string size].width,
+                                  [string size].height);
 	
 	[[NSGraphicsContext currentContext] saveGraphicsState];
 	NSShadow *textShadow = [[NSShadow alloc] init];

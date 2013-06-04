@@ -93,4 +93,20 @@
     return [pyDoc onlyClassesWithObjectsWithObjectCount];
 }
 
+- (NSArray*)fieldsOfClass:(NSString *)className {
+    return [pyDoc fieldsOfClass:className];
+}
+
+- (void)addEmptyObject:(NSString *)className {
+    [pyDoc addEmptyObject:className];
+}
+
+- (NSArray *)objectOfClass:(NSString *)className atIndex:(NSUInteger)index {
+    return [pyDoc objectOfClass:className atIndex:index];
+}
+
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(NSArray *)obj {
+    [pyDoc replaceObjectAtIndex:index withObject:obj];
+}
+
 @end

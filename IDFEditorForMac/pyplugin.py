@@ -2,18 +2,18 @@ import os.path
 import eplus
 
 
-accepted_classes = {
+class_defs = eplus.ClassDefinitions({
     'Version': eplus.ClassDefinition('Version', [
-        eplus.FieldDefinition('A1', {'type': 'alpha'})]),
+        eplus.FieldDefinition('A1', {'field': 'Version Identifier', 'type': 'alpha'})]),
     'ScheduleTypeLimits': eplus.ClassDefinition('ScheduleTypeLimits', [
-        eplus.FieldDefinition('A1', {'type': 'alpha'}),
-        eplus.FieldDefinition('N1', {'type': 'integer'}),
-        eplus.FieldDefinition('N2', {'type': 'integer'}),
-        eplus.FieldDefinition('A2', {'type': 'alpha'}),
-        eplus.FieldDefinition('A3', {'type': 'alpha'})]),
+        eplus.FieldDefinition('A1', {'field': 'Name', 'type': 'alpha'}),
+        eplus.FieldDefinition('N1', {'field': 'Lower Limit Value', 'type': 'integer'}),
+        eplus.FieldDefinition('N2', {'field': 'Upper Limit Value', 'type': 'integer'}),
+        eplus.FieldDefinition('A2', {'field': 'Numeric Type', 'type': 'alpha'}),
+        eplus.FieldDefinition('A3', {'field': 'Unit Type', 'type': 'alpha'})]),
     'Timestep': eplus.ClassDefinition('Timestep', [
-        eplus.FieldDefinition('N1', {'type': 'integer'})])
-}
+        eplus.FieldDefinition('N1', {'field': 'Number of Timesteps per Hour', 'type': 'integer'})])
+})
 
 
 class PyIdfDocument:
@@ -24,11 +24,11 @@ class PyIdfDocument:
     def readFromFile_(self, path: str):
         if not os.path.exists(path):
             return []
-        parser = eplus.IdfParser()
+        parser = eplus.IdfParser(class_defs)
         self.objs = parser.parse_file(path)
 
     def writeToFile_(self, path: str):
-        parser = eplus.IdfParser()
+        parser = eplus.IdfParser(class_defs)
         parser.write_file(self.objs, path)
 
     def objects(self) -> list:
@@ -36,7 +36,7 @@ class PyIdfDocument:
 
     def allClassesWithObjectCount(self) -> dict:
         result = {}
-        for clazz in accepted_classes.keys():
+        for clazz in class_defs.class_names():
             result[clazz] = 0
         for (clazz, count) in self.onlyClassesWithObjectsWithObjectCount().items():
             result[clazz] = count
@@ -53,3 +53,24 @@ class PyIdfDocument:
 
     def objectsOfClass_(self, className:str) -> list:
         return [obj for obj in self.objs if obj[0] == className]
+
+    def fieldsOfClass_(self, className:str) -> list:
+        class_def = class_defs.class_def(className)
+        return class_def.field_names()
+
+    def addEmptyObject_(self, className:str):
+        class_def = class_defs.class_def(className)
+        new_obj = [className] + [''] * class_def.field_count()
+        self.objs.append(new_obj)
+
+    def objectOfClass_atIndex_(self, className:str, index:int) -> list:
+        objs = self.objectsOfClass_(className)
+        if index < len(objs):
+            return objs[index]
+        else:
+            return []
+
+    def replaceObjectAtIndex_withObject_(self, index:int, obj:list):
+        old_obj = self.objectOfClass_atIndex_(obj[0], index)
+        i = self.objs.index(old_obj)
+        self.objs[i] = obj

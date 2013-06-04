@@ -54,3 +54,25 @@ class BridgeTestCase(th.PyEplusTestCase):
         only_schedule_type_limits = self.doc.objectsOfClass_('ScheduleTypeLimits')
         self.assertEquals(only_schedule_type_limits[0][0], 'ScheduleTypeLimits')
         self.assertEquals(only_schedule_type_limits[1][0], 'ScheduleTypeLimits')
+
+    def test_fields_of_class(self):
+        self.doc.readFromFile_('test_file.idf')
+        self.assertEquals(self.doc.fieldsOfClass_('Version'), ['Version Identifier'])
+        self.assertEquals(self.doc.fieldsOfClass_('ScheduleTypeLimits'), ['Name', 'Lower Limit Value', 'Upper Limit Value', 'Numeric Type', 'Unit Type'])
+        self.assertEquals(self.doc.fieldsOfClass_('Timestep'), ['Number of Timesteps per Hour'])
+
+    def test_new_object_returns_empty_object_with_class_name(self):
+        self.doc.addEmptyObject_('ScheduleTypeLimits')
+        self.assertEquals(self.doc.objectsOfClass_('ScheduleTypeLimits'), ['ScheduleTypeLimits,,,,,'.split(',')])
+
+    def test_returns_object_of_class_at_index(self):
+        self.doc.readFromFile_('test_file.idf')
+        self.assertEquals(self.doc.objectOfClass_atIndex_('Version', 0), ['Version', '7.2'])
+        self.assertEquals(self.doc.objectOfClass_atIndex_('Version', 1), [])
+
+    def test_replaces_object_at_index(self):
+        self.doc.readFromFile_('test_file.idf')
+        self.doc.replaceObjectAtIndex_withObject_(0, ['Version', '8.0'])
+        self.assertEquals(self.doc.objectsOfClass_('Version'), [['Version', '8.0']])
+
+
