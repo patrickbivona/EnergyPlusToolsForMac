@@ -74,3 +74,11 @@ class PyIdfDocument:
         old_obj = self.objectOfClass_atIndex_(obj[0], index)
         i = self.objs.index(old_obj)
         self.objs[i] = obj
+
+    def deleteObjectOfClass_atIndex_(self, className:str, index:int):
+        class_objs = self.objectsOfClass_(className)
+        if index >= len(class_objs):
+            return
+        class_obj = class_objs[index]
+        all_objs_index = self.objs.index(class_obj)
+        self.objs.pop(all_objs_index)

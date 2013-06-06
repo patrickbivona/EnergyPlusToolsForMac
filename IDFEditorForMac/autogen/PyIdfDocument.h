@@ -11,6 +11,7 @@
 - (id)init;
 - (void)addEmptyObject:(NSString *)className;
 - (NSDictionary *)allClassesWithObjectCount;
+- (void)deleteObjectOfClass:(NSString *)className atIndex:(NSInteger)index;
 - (NSArray *)fieldsOfClass:(NSString *)className;
 - (NSArray *)objectOfClass:(NSString *)className atIndex:(NSInteger)index;
 - (NSArray *)objects;

@@ -75,4 +75,16 @@ class BridgeTestCase(th.PyEplusTestCase):
         self.doc.replaceObjectAtIndex_withObject_(0, ['Version', '8.0'])
         self.assertEquals(self.doc.objectsOfClass_('Version'), [['Version', '8.0']])
 
+    def test_deletes_object_at_valid_index(self):
+        self.doc.readFromFile_('test_file.idf')
+        self.doc.deleteObjectOfClass_atIndex_('Version', 0)
+        self.assertEquals(self.doc.objectsOfClass_('Version'), [])
+
+    def test_does_nothing_when_deleting_object_at_invalid_index(self):
+        self.doc.readFromFile_('test_file.idf')
+        self.doc.deleteObjectOfClass_atIndex_('Version', 1)
+        self.assertEquals(self.doc.objectsOfClass_('Version'), [['Version', '7.2']])
+
+        
+        
 

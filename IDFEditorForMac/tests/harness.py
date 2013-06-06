@@ -8,12 +8,16 @@ import time
 class PyEplusTestCase(unittest.TestCase):
 
     def assertIdfFilesContentEquals(self, file1, file2):
-
         with open(file1, 'r') as f1:
             content1 = f1.read()
         with open(file2, 'r') as f2:
             content2 = f2.read()
         self.assertEquals(content1, content2)
+
+    def assertIdfFileContentEquals(self, file, expected):
+        with open(file, 'r') as f:
+            content = f.read()
+        self.assertEquals(content, expected)
 
 
 class AppTestCase(PyEplusTestCase):
@@ -47,7 +51,6 @@ class IdfEditorAppProxy:
         # give some time to the OS to write the file to disk
         time.sleep(1)
 
-
     def select_menuitem(self, menupath):
         self._run_ascript("scripts/select_menuitem.applescript", menupath)
 
@@ -56,6 +59,9 @@ class IdfEditorAppProxy:
 
     def input_object(self, fields):
         self._run_ascript("scripts/input_object.applescript", fields)
+
+    def move_to_column(self, index):
+        self._run_ascript('scripts/move_to_column.applescript', [str(index)])
 
     def _run_ascript(self, script_filepath, script_args=[]):
         # TODO only compile if .scpt is older than .applescript

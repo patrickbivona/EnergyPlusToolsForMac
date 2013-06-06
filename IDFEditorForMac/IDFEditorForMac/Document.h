@@ -25,7 +25,8 @@
 - (NSArray *)fieldsOfClass:(NSString *)className;
 - (NSArray *)objectOfClass:(NSString *)className atIndex:(NSUInteger)index;
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(NSArray *)obj;
-    
+- (void)deleteObjectOfClass:(NSString*)className atIndex:(NSUInteger)index;
+
 - (NSDictionary *)allClassesWithObjectCount;
 - (NSDictionary *)onlyClassesWithObjectsWithObjectCount;
 

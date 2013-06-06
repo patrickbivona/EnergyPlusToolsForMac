@@ -109,4 +109,8 @@
     [pyDoc replaceObjectAtIndex:index withObject:obj];
 }
 
+- (void)deleteObjectOfClass:(NSString*)className atIndex:(NSUInteger)index {
+    [pyDoc deleteObjectOfClass:className atIndex:index];
+}
+
 @end

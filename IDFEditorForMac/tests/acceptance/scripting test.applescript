@@ -1,13 +1,8 @@
-on run argv
-	tell application "System Events"
-		tell process "IDFEditorForMac"
-			keystroke tab
-			repeat with index from 1 to 2 -- length of argv
-				keystroke item index of argv
-				keystroke return
-				key code 125 -- down arrow
-			end repeat
-		end tell
+tell application "System Events"
+	tell process "IDFEditorForMac"
+		set frontmost to true
+		repeat with col from 0 to 2
+			key code 124 -- right arrow
+		end repeat
 	end tell
-	
-end run
+end tell

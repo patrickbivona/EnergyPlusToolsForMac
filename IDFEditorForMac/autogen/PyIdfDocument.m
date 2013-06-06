@@ -72,6 +72,26 @@
 
 }
 
+- (void)deleteObjectOfClass:(NSString *)className atIndex:(NSInteger)index
+{
+    OBJP_LOCKGIL;
+    PyObject *pFunc = PyObject_GetAttrString(_py, "deleteObjectOfClass_atIndex_");
+    OBJP_ERRCHECK(pFunc);
+    
+    PyObject *pclassName = ObjP_str_o2p(className);
+    PyObject *pindex = ObjP_int_o2p(index);
+    PyObject *pResult = PyObject_CallFunctionObjArgs(pFunc, pclassName, pindex, NULL);
+    Py_DECREF(pclassName);
+    Py_DECREF(pindex);
+    OBJP_ERRCHECK(pResult);
+    Py_DECREF(pFunc);
+
+    
+    Py_DECREF(pResult);
+    OBJP_UNLOCKGIL;
+
+}
+
 - (NSArray *)fieldsOfClass:(NSString *)className
 {
     OBJP_LOCKGIL;

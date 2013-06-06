@@ -40,11 +40,29 @@
     }
 }
 
+#pragma mark - Menu Items
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+    
+    if ([menuItem action] == @selector(selectedDeleteObject:)) {
+        return [self numberOfColumnsInTableGrid:objectsTable] > 0;
+    }
+    return YES;
+}
+
 - (IBAction)selectedNewObject:(id)sender {
     NSString *class = [self selectedClass];
     [[self document] addEmptyObject:class];
     [classesOutlineView reloadData];
     [self selectClass:class];
+    [objectsTable reloadData];
+}
+
+- (IBAction)selectedDeleteObject:(id)sender {
+    NSIndexSet *selectedCols = [objectsTable selectedColumnIndexes];
+    [selectedCols enumerateIndexesUsingBlock:^(NSUInteger col, BOOL *stop) {
+        [self.document deleteObjectOfClass:[self selectedClass] atIndex:col];
+    }];
     [objectsTable reloadData];
 }
 
