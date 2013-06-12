@@ -1,53 +1,6 @@
 import pyparsing as pp
 
 
-class IdfParser(object):
-
-    def __init__(self, class_definitions):
-        self.defs = class_definitions
-        self.comma = pp.Suppress(pp.Literal(','))
-        self.semicolon = pp.Suppress(pp.Literal(';'))
-        self.classname = pp.Word(pp.alphanums).setName('classname')
-        self.field_comment = pp.Suppress(pp.Literal('!-') + pp.restOfLine.setName('fieldcomment') + pp.LineEnd())
-        self.field = pp.Word(pp.alphanums + '. ').setName('field')
-        self.obj = self.classname + self.comma + \
-            pp.ZeroOrMore(self.field + self.comma + pp.Optional(self.field_comment)) + \
-            self.field + self.semicolon + pp.Optional(self.field_comment)
-        self.obj.setDebug()
-        self.objs = pp.ZeroOrMore(pp.Group(self.obj))
-
-        self.errors = []
-
-    def parse(self, idf):
-        """Returns a list of parsed objects"""
-        result = []
-        self.errors = []
-        try:
-            objects = self.objs.parseString(idf).asList()
-            for o in objects:
-                if self.defs.supports_object(o):
-                    result.append(o)
-                else:
-                    self.errors.append('Found unsupported object: ' + ','.join(o) + ';')
-            return result
-        except pp.ParseException as e:
-            print(e)
-            return []
-
-    def errors(self):
-        self.errors
-
-    def parse_file(self, filename):
-        """Returns a list of objects parsed from the given file"""
-        with open(filename, 'r') as f:
-            return self.parse(f.read())
-
-    def write_file(self, objects, filename):
-        with open(filename, 'w') as f:
-            for obj in objects:
-                f.write(','.join(obj) + ';\n')
-
-
 class ClassDefinitions(object):
 
     def __init__(self, defs={}):
@@ -67,6 +20,12 @@ class ClassDefinitions(object):
             return False
         else:
             return object[0] in self.class_defs
+
+
+class NoddingClassDefinitions(object):
+
+    def supports_object(self, object):
+        return True
 
 
 class ClassDefinition(object):
@@ -169,3 +128,70 @@ class DataDictionaryParser(object):
         for raw_field in raw_def.fields:
             class_def.add_field(FieldDefinition(raw_field.id, raw_field[1]))
         return class_def
+
+
+class InlineIdfFormatter(object):
+
+    def format(self, idf_obj):
+        return ','.join(idf_obj) + ';\n'
+
+
+class PrettyIdfFormatter(object):
+
+    def __init__(self, print_comments=True, indentation=4):
+        self.indent = ' ' * indentation
+
+    def format(self, idf_obj):
+        result = ''
+        for index, field in enumerate(idf_obj):
+            if index == 0:
+                result += field + ',\n'
+            elif index == len(idf_obj)-1:
+                result += self.indent + field + ';\n\n'
+            else:
+                result += self.indent + field + ',\n'
+        return result
+
+
+class IdfParser(object):
+
+    def __init__(self, class_definitions=NoddingClassDefinitions()):
+        self.defs = class_definitions
+        self.comma = pp.Suppress(pp.Literal(','))
+        self.semicolon = pp.Suppress(pp.Literal(';'))
+        self.classname = pp.Word(pp.alphas, pp.alphas + ':')
+        self.field_comment = pp.Suppress(pp.Literal('!-') + pp.restOfLine.setName('fieldcomment') + pp.LineEnd())
+        self.field = (pp.Word(pp.printables + ' ', excludeChars=',;') | pp.Empty().setParseAction(pp.replaceWith(''))).setName('field')
+        self.obj = self.classname + self.comma + \
+            pp.ZeroOrMore(self.field + self.comma + pp.Optional(self.field_comment)) + \
+            self.field + self.semicolon + pp.Optional(self.field_comment)
+        # self.obj.setDebug()
+        self.objs = pp.ZeroOrMore(pp.Group(self.obj))
+
+        self.errors = []
+
+    def parse(self, idf):
+        """Returns a list of parsed objects"""
+        result = []
+        self.errors = []
+        try:
+            objects = self.objs.parseString(idf).asList()
+            for o in objects:
+                if self.defs.supports_object(o):
+                    result.append(o)
+                else:
+                    self.errors.append('Found unsupported object: ' + ','.join(o) + ';')
+            return result
+        except pp.ParseException as e:
+            print(e)
+            return []
+
+    def parse_file(self, filename):
+        """Returns a list of objects parsed from the given file"""
+        with open(filename, 'r') as f:
+            return self.parse(f.read())
+
+    def write_file(self, objects, filename, formatter):
+        with open(filename, 'w') as f:
+            for obj in objects:
+                f.write(formatter.format(obj))
