@@ -1,49 +1,49 @@
 import unittest
-import tests.harness as test
 import eplus
 
 
 class DataDictionaryParsingTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.idd_parser = eplus.DataDictionaryParser()
-        # self.idf_parser = eplus.IdfParser()
+        self.p = eplus.DataDictionaryParser()
 
     def test_accepts_alpha_fields(self):
         idd = """
-        Class1,
+        Class,
           A1; \\field Field1
               \\type alpha
         """
-        class_def = self.idd_parser.parse(idd)['Class1']
+        defs = self.p.parse(idd)
+        class_def = defs.class_def('Class')
         self.assertField(class_def.fields[0], 'A1', 'Field1', 'alpha')
 
     def test_accepts_integer_fields(self):
         idd = """
-        Class1,
+        Class,
           N1; \\field Field1
               \\type integer
         """
-        class_def = self.idd_parser.parse(idd)['Class1']
+        defs = self.p.parse(idd)
+        class_def = defs.class_def('Class')
         self.assertField(class_def.fields[0], 'N1', 'Field1', 'integer')
 
-    # def test_recognises_single_class_definition(self):
-    #     class_defs = self.idd_parser.parse_file(test.path_to_datafile('simple_class.idd'))
+    def test_parses_definitions_on_multiple_lines(self):
+        idd = """
+        Class,
+          A1; \\field Field1
+              \\type alpha
+        OtherClass,
+          N1; \\field Field1
+              \\type integer
+        """
+        defs = self.p.parse(idd)
+        self.assertTrue('Class' in defs.class_names())
+        self.assertTrue('OtherClass' in defs.class_names())
 
-    #     (objects, errors) = self.idf_parser.parse_file(test.path_to_datafile('simple_object.idf'), class_defs)
-
-    #     expected = ['Class value1 value2 value3'.split(' ')]
-    #     self.assertEqual(errors, [])
-    #     self.assertEqual(objects, expected)
-
-    # def test_recognises_multiple_class_definitions(self):
-    #     definitions = self.idd_parser.parse_file(test.path_to_datafile('multiple_classes.idd'))
-
-    #     (objects, errors) = self.idf_parser.parse_file(test.path_to_datafile('multiple_objects.idf'), definitions)
-
-    #     expected = ['Class1 alpha1 alpha2 alpha3'.split(' '), 'Class2 1 2 alpha3'.split(' ')]
-    #     self.assertEqual(errors, [])
-    #     self.assertEqual(objects, expected)
+    def test_allows_using_bracket_operator_to_find_class_def(self):
+        idd = "Class,A1; \\field Field"
+        defs = self.p.parse(idd)
+        self.assertEquals(defs['Class'].name, 'Class')
 
     def assertField(self, field, expected_id, expected_name, expected_type):
         self.assertEquals(field.id, expected_id)

@@ -11,10 +11,14 @@ class IdfFormattingTestCase(unittest.TestCase):
             "Version,8.0".split(','),
             "ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(',')
         ]
-
-    def test_inline_formatting(self):
         if os.path.exists('test_file.idf'):
             os.remove('test_file.idf')
+
+    def tearDown(self):
+        if os.path.exists('test_file.idf'):
+            os.remove('test_file.idf')
+
+    def test_inline_formatting(self):
 
         self.p.write_file(self.objs, 'test_file.idf', eplus.InlineIdfFormatter())
 

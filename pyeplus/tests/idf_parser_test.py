@@ -64,8 +64,8 @@ class IdfParserTest(unittest.TestCase):
 
     def test_parsing_skips_objects_of_unknown_classes(self):
         objs = self.p.parse("Class,field1;\nOtherClass,field2;")
-        self.assertEquals(objs, [['Class', 'field1']])
         self.assertEquals(self.p.errors, ['Found unsupported object: OtherClass,field2;'])
+        self.assertEquals(objs, [['Class', 'field1']])
 
     #
     # File IO

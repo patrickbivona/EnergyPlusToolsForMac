@@ -1,10 +1,11 @@
 import pyparsing as pp
+import copy
 
 
 class ClassDefinitions(object):
 
     def __init__(self, defs={}):
-        self.class_defs = defs
+        self.class_defs = copy.deepcopy(defs)
 
     def add_class_def(self, class_def):
         self.class_defs[class_def.name] = class_def
@@ -14,6 +15,9 @@ class ClassDefinitions(object):
 
     def class_def(self, class_name):
         return self.class_defs[class_name]
+
+    def __getitem__(self, key):
+        return self.class_def(key)
 
     def supports_object(self, object):
         if object is None or len(object) < 1:
@@ -43,17 +47,6 @@ class ClassDefinition(object):
     def add_field(self, field):
         self.fields.append(field)
 
-    def validate_object(self, eplus_obj):
-        """Returns None if object is valid, error message otherwise"""
-        if eplus_obj[0] != self.name:
-            return "Class name does not match definition:", self.name
-        if len(eplus_obj) - 1 != len(self.fields):
-            return "Incorrect number of fields for class: %i, expected %i" % (len(eplus_obj) - 1, len(self.fields))
-        for (field_value, field_definition) in zip(eplus_obj[1:], self.fields):
-            if not field_definition.accepts(field_value):
-                return "Invalid value %s for field %s" % (field_value, field_definition.id)
-        return None
-
     def field_names(self):
         return [field.attributes['field'] for field in self.fields]
 
@@ -73,50 +66,35 @@ class FieldDefinition(object):
         repr += "}"
         return repr
 
-    def accepts(self, field_value):
-        field_type = self.attributes.get('type')
-        if field_type is None:
-            return False
-        elif field_type == 'integer':
-            try:
-                int(field_value)
-                return True
-            except ValueError:
-                return False
-        elif field_type == 'alpha':
-            return True
-        else:
-            return False
-
-
-comma = pp.Suppress(pp.Literal(','))
-semicolon = pp.Suppress(pp.Literal(';'))
-backslash = pp.Suppress('\\')
-
-class_name = pp.Word(pp.alphanums)
-field_id = pp.Combine(pp.oneOf('A N') + pp.Word(pp.nums))
-field_name = backslash + pp.Literal('field') + pp.Word(pp.alphanums)
-field_type = backslash + pp.Literal('type') + pp.Word(pp.alphanums)
-field_attribute = pp.Group(field_name | field_type)
-
-field_definition = pp.Group(field_id.setResultsName("id") +
-                            (comma | semicolon) +
-                            pp.Group(pp.Dict((pp.ZeroOrMore(field_attribute)))))
-classs = class_name.setResultsName("class_name") + comma + pp.OneOrMore(field_definition).setResultsName("fields")
-classes = pp.ZeroOrMore(pp.Group(classs))
-
 
 class DataDictionaryParser(object):
+
     def __init__(self):
-        pass
+        self.comma = pp.Suppress(pp.Literal(','))
+        self.semicolon = pp.Suppress(pp.Literal(';'))
+        self.backslash = pp.Suppress('\\')
+
+        self.class_name = pp.Word(pp.alphanums)
+        self.field_id = pp.Combine(pp.oneOf('A N') + pp.Word(pp.nums))
+
+        self.field_name = self.backslash + pp.Literal('field') + pp.Word(pp.alphanums)
+        self.field_type = self.backslash + pp.Literal('type') + pp.Word(pp.alphanums)
+
+        self.field_attribute = pp.Group(self.field_name | self.field_type)
+
+        self.field_definition = pp.Group(self.field_id.setResultsName("id") +
+                                    (self.comma | self.semicolon) +
+                                    pp.Group(pp.Dict((pp.ZeroOrMore(self.field_attribute)))))
+        self.classs = self.class_name.setResultsName("class_name") + self.comma + pp.OneOrMore(self.field_definition).setResultsName("fields")
+        self.classes = pp.ZeroOrMore(pp.Group(self.classs))
 
     def parse(self, idd_string):
-        raw_defs = classes.parseString(idd_string)
-        class_defs = {}
+        raw_defs = self.classes.parseString(idd_string)
+        class_defs = ClassDefinitions()
         for raw_def in raw_defs:
             class_def = self._make_definition(raw_def)
             if class_def:
-                class_defs[class_def.name] = class_def
+                class_defs.add_class_def(class_def)
         return class_defs
 
     def parse_file(self, idd_file_path):
