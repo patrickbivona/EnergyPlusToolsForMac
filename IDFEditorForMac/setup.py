@@ -1,12 +1,13 @@
 import sys
 import os
 import os.path
-import shutil
 
 sys.path.append(os.path.join(os.getcwd(), '../pyeplus'))
 
+
 def build():
     pass
+
 
 def run_acceptance_tests(tests):
     os.chdir('tests/acceptance')

@@ -14,7 +14,10 @@ class ClassDefinitions(object):
         return self.class_defs.keys()
 
     def class_def(self, class_name):
-        return self.class_defs[class_name]
+        try:
+            return self.class_defs[class_name]
+        except KeyError:
+            return None
 
     def __getitem__(self, key):
         return self.class_def(key)
@@ -98,7 +101,7 @@ class DataDictionaryParser(object):
         self.classs.setDebug()
 
     def parse(self, idd_string):
-        try:            
+        try:
             raw_defs = self.classes.parseString(idd_string)
             class_defs = ClassDefinitions()
             for raw_def in raw_defs:

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'idf_editor.ui'
 #
-# Created: Sun Dec 22 00:26:12 2013
+# Created: Sun Dec 22 17:51:29 2013
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,6 +45,10 @@ class Ui_MainWindow(object):
         self.menuFile.setObjectName("menuFile")
         self.menuView = QtGui.QMenu(self.menubar)
         self.menuView.setObjectName("menuView")
+        self.menuEdit = QtGui.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
+        self.menuHelp = QtGui.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -60,14 +64,19 @@ class Ui_MainWindow(object):
         self.actionShowClassesWithObjectsOnly = QtGui.QAction(MainWindow)
         self.actionShowClassesWithObjectsOnly.setCheckable(True)
         self.actionShowClassesWithObjectsOnly.setObjectName("actionShowClassesWithObjectsOnly")
+        self.actionNew_Object = QtGui.QAction(MainWindow)
+        self.actionNew_Object.setObjectName("actionNew_Object")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSaveAs)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionClose)
         self.menuView.addAction(self.actionShowClassesWithObjectsOnly)
+        self.menuEdit.addAction(self.actionNew_Object)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QObject.connect(self.actionClose, QtCore.SIGNAL("triggered()"), MainWindow.close)
@@ -77,6 +86,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "View", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuEdit.setTitle(QtGui.QApplication.translate("MainWindow", "Edit", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Open...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpen.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+O", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSaveAs.setText(QtGui.QApplication.translate("MainWindow", "Save As...", None, QtGui.QApplication.UnicodeUTF8))
@@ -87,4 +98,6 @@ class Ui_MainWindow(object):
         self.actionSave.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionShowClassesWithObjectsOnly.setText(QtGui.QApplication.translate("MainWindow", "Show Classes with Objects Only", None, QtGui.QApplication.UnicodeUTF8))
         self.actionShowClassesWithObjectsOnly.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+L", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNew_Object.setText(QtGui.QApplication.translate("MainWindow", "New Object", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNew_Object.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
 

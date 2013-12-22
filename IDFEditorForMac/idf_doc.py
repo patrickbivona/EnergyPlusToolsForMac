@@ -15,7 +15,7 @@ class_defs = eplus.ClassDefinitions({
 })
 
 
-class PyIdfDocument:
+class IdfDocument:
 
     def __init__(self):
         self.objs = []
@@ -55,26 +55,29 @@ class PyIdfDocument:
 
     def fieldsOfClass(self, className):
         class_def = class_defs.class_def(className)
-        return class_def.field_names()
+        if class_def is None:
+            return []
+        else:
+            return class_def.field_names()
 
     def addEmptyObject(self, className):
         class_def = class_defs.class_def(className)
         new_obj = [className] + [''] * class_def.field_count()
         self.objs.append(new_obj)
 
-    def objectOfClass_atIndex(self, className, index):
+    def objectOfClassAtIndex(self, className, index):
         objs = self.objectsOfClass(className)
         if index < len(objs):
             return objs[index]
         else:
             return []
 
-    def replaceObjectAtIndex_withObject(self, index, obj):
-        old_obj = self.objectOfClass_atIndex(obj[0], index)
+    def replaceObjectAtIndexWithObject(self, index, obj):
+        old_obj = self.objectOfClassAtIndex(obj[0], index)
         i = self.objs.index(old_obj)
         self.objs[i] = obj
 
-    def deleteObjectOfClass_atIndex(self, className, index):
+    def deleteObjectOfClassAtIndex(self, className, index):
         class_objs = self.objectsOfClass(className)
         if index >= len(class_objs):
             return
