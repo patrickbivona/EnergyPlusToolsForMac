@@ -7,6 +7,14 @@ class DataDictionaryParsingTestCase(unittest.TestCase):
     def setUp(self):
         self.p = eplus.DataDictionaryParser()
 
+    def test_skips_class_level_attributes_for_now(self):
+        idd = """
+Class,
+    \\memo Some comment
+    A1 ; \\field Field"""
+        defs = self.p.parse(idd)
+        self.assertEquals(len(defs), 1)
+
     def test_accepts_alpha_fields(self):
         idd = """
         Class,

@@ -19,6 +19,9 @@ class ClassDefinitions(object):
     def __getitem__(self, key):
         return self.class_def(key)
 
+    def __len__(self):
+        return len(self.class_defs)
+
     def supports_object(self, object):
         if object is None or len(object) < 1:
             return False
@@ -74,28 +77,38 @@ class DataDictionaryParser(object):
         self.semicolon = pp.Suppress(pp.Literal(';'))
         self.backslash = pp.Suppress('\\')
 
-        self.class_name = pp.Word(pp.alphanums)
         self.field_id = pp.Combine(pp.oneOf('A N') + pp.Word(pp.nums))
 
-        self.field_name = self.backslash + pp.Literal('field') + pp.Word(pp.alphanums)
-        self.field_type = self.backslash + pp.Literal('type') + pp.Word(pp.alphanums)
-
-        self.field_attribute = pp.Group(self.field_name | self.field_type)
-
+        self.field_attribute_key = pp.Word(pp.alphas, pp.alphas + '-')
+        self.field_attribute = pp.Group(pp.Suppress(self.backslash) + self.field_attribute_key + \
+                                    pp.Word(pp.printables))
         self.field_definition = pp.Group(self.field_id.setResultsName("id") +
                                     (self.comma | self.semicolon) +
                                     pp.Group(pp.Dict((pp.ZeroOrMore(self.field_attribute)))))
-        self.classs = self.class_name.setResultsName("class_name") + self.comma + pp.OneOrMore(self.field_definition).setResultsName("fields")
+        self.field_level_attributes = pp.Group(pp.Dict((pp.ZeroOrMore(self.field_attribute))))
+
+        self.class_attribute_memo = self.backslash + pp.Literal('memo') + pp.OneOrMore(pp.Word(pp.printables))
+        self.class_attributes = self.class_attribute_memo + ~pp.FollowedBy(self.field_definition)
+
+        self.class_name = pp.Word(pp.alphanums).setResultsName("class_name")
+        self.classs = self.class_name + self.comma + \
+                        pp.ZeroOrMore(self.class_attributes) + \
+                        pp.OneOrMore(self.field_definition).setResultsName("fields")
         self.classes = pp.ZeroOrMore(pp.Group(self.classs))
+        self.classs.setDebug()
 
     def parse(self, idd_string):
-        raw_defs = self.classes.parseString(idd_string)
-        class_defs = ClassDefinitions()
-        for raw_def in raw_defs:
-            class_def = self._make_definition(raw_def)
-            if class_def:
-                class_defs.add_class_def(class_def)
-        return class_defs
+        try:            
+            raw_defs = self.classes.parseString(idd_string)
+            class_defs = ClassDefinitions()
+            for raw_def in raw_defs:
+                class_def = self._make_definition(raw_def)
+                if class_def:
+                    class_defs.add_class_def(class_def)
+            return class_defs
+        except pp.ParseException as e:
+            print(e)
+            return ClassDefinition
 
     def parse_file(self, idd_file_path):
         with open(idd_file_path, 'r') as idd:
@@ -169,7 +182,7 @@ class IdfParser(object):
         with open(filename, 'r') as f:
             return self.parse(f.read())
 
-    def write_file(self, objects, filename, formatter):
+    def write_file(self, objects, filename, formatter=PrettyIdfFormatter()):
         with open(filename, 'w') as f:
             for obj in objects:
                 f.write(formatter.format(obj))

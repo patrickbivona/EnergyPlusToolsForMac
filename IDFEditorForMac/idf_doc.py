@@ -1,7 +1,6 @@
 import os.path
 import eplus
 
-
 class_defs = eplus.ClassDefinitions({
     'Version': eplus.ClassDefinition('Version', [
         eplus.FieldDefinition('A1', {'field': 'Version Identifier', 'type': 'alpha'})]),
@@ -21,20 +20,20 @@ class PyIdfDocument:
     def __init__(self):
         self.objs = []
 
-    def readFromFile_(self, path: str):
+    def readFromFile(self, path):
         if not os.path.exists(path):
             return []
         parser = eplus.IdfParser(class_defs)
         self.objs = parser.parse_file(path)
 
-    def writeToFile_(self, path: str):
+    def writeToFile(self, path):
         parser = eplus.IdfParser(class_defs)
-        parser.write_file(self.objs, path)
+        parser.write_file(self.objs, path, eplus.InlineIdfFormatter())
 
-    def objects(self) -> list:
+    def objects(self):
         return self.objs
 
-    def allClassesWithObjectCount(self) -> dict:
+    def allClassesWithObjectCount(self):
         result = {}
         for clazz in class_defs.class_names():
             result[clazz] = 0
@@ -42,7 +41,7 @@ class PyIdfDocument:
             result[clazz] = count
         return result
 
-    def onlyClassesWithObjectsWithObjectCount(self) -> dict:
+    def onlyClassesWithObjectsWithObjectCount(self):
         result = {}
         for obj in self.objs:
             class_name = obj[0]
@@ -51,32 +50,32 @@ class PyIdfDocument:
             result[class_name] = tmp_count
         return result
 
-    def objectsOfClass_(self, className:str) -> list:
+    def objectsOfClass(self, className):
         return [obj for obj in self.objs if obj[0] == className]
 
-    def fieldsOfClass_(self, className:str) -> list:
+    def fieldsOfClass(self, className):
         class_def = class_defs.class_def(className)
         return class_def.field_names()
 
-    def addEmptyObject_(self, className:str):
+    def addEmptyObject(self, className):
         class_def = class_defs.class_def(className)
         new_obj = [className] + [''] * class_def.field_count()
         self.objs.append(new_obj)
 
-    def objectOfClass_atIndex_(self, className:str, index:int) -> list:
-        objs = self.objectsOfClass_(className)
+    def objectOfClass_atIndex(self, className, index):
+        objs = self.objectsOfClass(className)
         if index < len(objs):
             return objs[index]
         else:
             return []
 
-    def replaceObjectAtIndex_withObject_(self, index:int, obj:list):
-        old_obj = self.objectOfClass_atIndex_(obj[0], index)
+    def replaceObjectAtIndex_withObject(self, index, obj):
+        old_obj = self.objectOfClass_atIndex(obj[0], index)
         i = self.objs.index(old_obj)
         self.objs[i] = obj
 
-    def deleteObjectOfClass_atIndex_(self, className:str, index:int):
-        class_objs = self.objectsOfClass_(className)
+    def deleteObjectOfClass_atIndex(self, className, index):
+        class_objs = self.objectsOfClass(className)
         if index >= len(class_objs):
             return
         class_obj = class_objs[index]

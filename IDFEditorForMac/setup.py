@@ -5,38 +5,12 @@ import shutil
 
 sys.path.append(os.path.join(os.getcwd(), '../pyeplus'))
 
-
 def build():
-    import pyplugin
-    import objp.o2p
-
-    objp.o2p.generate_objc_code(pyplugin.PyIdfDocument, os.path.join('.', 'autogen'))
-
-    pydest = 'build/py'
-    if not os.path.exists(pydest):
-        os.mkdir(pydest)
-    shutil.copy(os.path.join(os.getcwd(), 'pyplugin.py'), pydest)
-    shutil.copy('../pyeplus/eplus.py', pydest)
-
-    # For some strange reason, a "site.py" file is required at pydest.
-    with open(os.path.join('build/py', 'site.py'), 'w'):
-        pass
-
-    from pluginbuilder import copy_embeddable_python_dylib, collect_dependencies
-    copy_embeddable_python_dylib('build')
-    collect_dependencies(os.path.join('.', 'pyplugin.py'), pydest)
-
-    from pluginbuilder import get_python_header_folder
-    if not os.path.exists('build/PythonHeaders'):
-        os.symlink(get_python_header_folder(), 'build/PythonHeaders')
-
-    # build app
-    os.system('xcodebuild -target IDFEditorForMac clean build')
-
+    pass
 
 def run_acceptance_tests(tests):
     os.chdir('tests/acceptance')
-    os.system('nosetests ' + ' '.join(tests))
+    os.system('nosetests-3.3 ' + ' '.join(tests))
     os.chdir('../..')
 
 if __name__ == '__main__':
