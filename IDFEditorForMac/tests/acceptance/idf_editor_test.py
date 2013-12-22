@@ -21,6 +21,10 @@ class IdfEditorTestCase(th.AppTestCase):
         self.window.saveFileAs('other_file.idf')
         self.assertIdfFilesContentEquals('test_file.idf', 'other_file.idf')
 
+    def test_toggle_show_classes_with_objects_only_shows_all_classes_for_empty_doc(self):
+        self.window.showClassesWithObjectsOnly(True)
+        self.assertEquals(self.window.ui.listView.model().rowCount(), 3)
+
     def test_can_toggle_show_classes_with_objects_only(self):
 
         self.window.openFile('test_file.idf')

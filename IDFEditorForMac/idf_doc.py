@@ -30,6 +30,9 @@ class IdfDocument:
         parser = eplus.IdfParser(class_defs)
         parser.write_file(self.objs, path, eplus.InlineIdfFormatter())
 
+    def isEmpty(self):
+        return len(self.objs) == 0
+
     def objects(self):
         return self.objs
 

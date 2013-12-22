@@ -51,7 +51,6 @@ class IdfEditorWindow(QMainWindow):
         self.saveFileAs(filetuple[0])
 
     def actionShowClassesWithObjectsOnly(self):
-        print(self.ui.actionShowClassesWithObjectsOnly.isChecked())
         self.showClassesWithObjectsOnly(self.ui.actionShowClassesWithObjectsOnly.isChecked())
 
     def actionClassClicked(self, index):
@@ -69,7 +68,7 @@ class IdfEditorWindow(QMainWindow):
 
     def showClassesWithObjectsOnly(self, state):
         self.ui.actionShowClassesWithObjectsOnly.setChecked(state)
-        if state:
+        if state and not self.doc.isEmpty():
             classes = self.doc.onlyClassesWithObjectsWithObjectCount()
         else:
             classes = self.doc.allClassesWithObjectCount()

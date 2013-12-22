@@ -9,6 +9,12 @@ class IdfDocumentTest(th.PyEplusTestCase):
     def setUp(self):
         self.doc = IdfDocument()
 
+    def test_doc_is_empty(self):
+        self.assertTrue(self.doc.isEmpty())
+
+        self.doc.addEmptyObject("Version")
+        self.assertFalse(self.doc.isEmpty())
+
     def test_read_returns_empty_list_when_file_does_not_exist(self):
         self.doc.readFromFile('file/does/not/exist.idf')
         self.assertEquals(len(self.doc.objs), 0)
