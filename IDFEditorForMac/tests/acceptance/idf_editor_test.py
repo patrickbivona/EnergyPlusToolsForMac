@@ -2,6 +2,7 @@ import tests.harness as th
 import os
 import errno
 from idf_editor import IdfEditorWindow
+from PySide.QtCore import Qt, QPoint
 from PySide.QtTest import QTest
 
 
@@ -25,6 +26,16 @@ class IdfEditorTestCase(th.AppTestCase):
         self.window.showClassesWithObjectsOnly(True)
         self.assertEquals(self.window.ui.listView.model().rowCount(), 3)
 
+    def test_tables_contains_object_for_selected_class(self):
+        self.window.openFile('test_file.idf')
+        model = self.window.ui.tableView.model()
+
+        self.window.selectClass("Version")
+        self.assertEquals(model.data(model.createIndex(0, 0)), "7.2")
+
+        self.window.selectClass("ScheduleTypeLimits")
+        self.assertEquals(model.data(model.createIndex(0, 0)), "Fraction")
+
     def test_can_toggle_show_classes_with_objects_only(self):
 
         self.window.openFile('test_file.idf')
@@ -35,34 +46,64 @@ class IdfEditorTestCase(th.AppTestCase):
         self.window.showClassesWithObjectsOnly(True)
         self.assertEquals(set(self.window.classes()), set(['Version', 'ScheduleTypeLimits']))
 
-    # def test_input_object_in_new_file(self):
-    #     if os.path.exists("current_running_test.idf"):
-    #         os.remove("current_running_test.idf")
+    def test_adds_new_object(self):
+        if os.path.exists("current_running_test.idf"):
+            os.remove("current_running_test.idf")
+
+        # only necessary to test shortcuts, which... doesn't work
+        # self.window.show()
+        # QTest.qWaitForWindowShown(self.window)
+
+        self.window.selectClass("ScheduleTypeLimits")
+        # This doesn't work currently, for some reason
+        # QTest.keyClick(self.window, Qt.Key_N, Qt.ShiftModifier)
+        self.window.addNewObject()
+
+        self.assertEquals(self.window.doc.objectsOfClass("ScheduleTypeLimits")[0], "ScheduleTypeLimits,,,,,".split(","))
+
+    def test_does_not_delete_object_when_none_selected(self):
+        self.window.openFile('test_file.idf')
+        self.assertEquals(len(self.window.doc.objects()), 2)
+
+        self.window.deleteObject()
+
+        self.assertEquals(len(self.window.doc.objects()), 2)
+
+    def test_deletes_selected_object(self):
+
+        self.window.openFile('test_file.idf')
+        self.assertEquals(self.window.doc.objectsOfClass("ScheduleTypeLimits"), ["ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(",")])
+
+        self.window.selectClass('ScheduleTypeLimits')
+        self.select_object_field_at(0, 0)
+        self.window.deleteObject()
+
+        self.assertEquals(self.window.doc.objectsOfClass("ScheduleTypeLimits"), [])
+
+    # def test_input_object(self):
 
     #     self.window.selectClass("ScheduleTypeLimits")
     #     self.window.addNewObject()
-    #     QTest.keyClicks(self.window.ui.tableView, "Fraction")
-    #     QTest.keyClicks(self.window.ui.tableView, "0")
-    #     QTest.keyClicks(self.window.ui.tableView, "1")
-    #     QTest.keyClicks(self.window.ui.tableView, "Continuous")
-    #     QTest.keyClicks(self.window.ui.tableView, "Dimensionless")
-    #     self.window.saveFileAs("current_running_test.idf")
 
-    #     # compare with expected result
-    #     self.assertIdfFilesContentEquals('current_running_test.idf', 'fraction_schedule_type.idf')
+    #     # this code is supposed to edit a QTableView but doesn't work...
+    #     # see http://stackoverflow.com/questions/12604739/how-can-you-edit-a-qtableview-cell-from-a-qtest-unit-test
+    #     xPos = self.window.ui.tableView.columnViewportPosition(1) + 5
+    #     yPos = self.window.ui.tableView.rowViewportPosition(0) + 10
+    #     viewport = self.window.ui.tableView.viewport()
 
-    # def test_delete_object(self):
-    #     pass
-#         if os.path.exists('current_running_test.idf'):
-#             os.remove('current_running_test.idf')
+    #     QTest.mouseClick(viewport, Qt.LeftButton, Qt.NoModifier, QPoint(xPos, yPos))
+    #     QTest.mouseDClick(viewport, Qt.LeftButton, Qt.NoModifier, QPoint(xPos, yPos))
+    #     QTest.keyClicks(viewport.focusWidget(), "Fraction")
+    #     QTest.keyClick(viewport.focusWidget(), Qt.Key_Enter)
+    #     # QTest.keyClicks(viewport.focusWidget(), "0")
+    #     # QTest.keyClicks(viewport.focusWidget(), "1")
+    #     # QTest.keyClicks(viewport.focusWidget(), "Continuous")
+    #     # QTest.keyClicks(viewport.focusWidget(), "Dimensionless")
 
-#         self.app_proxy.open_test_idf('test_file.idf')
-#         self.app_proxy.select_class('ScheduleTypeLimits')
-#         self.app_proxy.move_to_column(0)
-#         self.app_proxy.select_menuitem(['Edit', 'Delete Object'])
-#         self.app_proxy.save_test_idf_as('current_running_test.idf')
+    #     self.assertEquals(self.window.doc.objectsOfClass("ScheduleTypeLimits")[0], "ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(","))
 
-#         expected = """Version,7.2;
-# """
-#         self.assertIdfFileContentEquals('current_running_test.idf', expected)
-
+    def select_object_field_at(self, row, column):
+        xPos = self.window.ui.tableView.columnViewportPosition(row) + 5
+        yPos = self.window.ui.tableView.rowViewportPosition(column) + 10
+        viewport = self.window.ui.tableView.viewport()
+        QTest.mouseClick(viewport, Qt.LeftButton, pos=QPoint(xPos, yPos))

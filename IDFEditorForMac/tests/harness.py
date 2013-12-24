@@ -1,8 +1,4 @@
 import unittest
-import os
-import os.path
-import subprocess
-import time
 from PySide.QtGui import QApplication
 
 

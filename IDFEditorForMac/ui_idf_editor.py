@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'idf_editor.ui'
 #
-# Created: Sun Dec 22 17:51:29 2013
+# Created: Tue Dec 24 21:18:42 2013
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -64,15 +64,18 @@ class Ui_MainWindow(object):
         self.actionShowClassesWithObjectsOnly = QtGui.QAction(MainWindow)
         self.actionShowClassesWithObjectsOnly.setCheckable(True)
         self.actionShowClassesWithObjectsOnly.setObjectName("actionShowClassesWithObjectsOnly")
-        self.actionNew_Object = QtGui.QAction(MainWindow)
-        self.actionNew_Object.setObjectName("actionNew_Object")
+        self.actionNewObject = QtGui.QAction(MainWindow)
+        self.actionNewObject.setObjectName("actionNewObject")
+        self.actionDeleteObject = QtGui.QAction(MainWindow)
+        self.actionDeleteObject.setObjectName("actionDeleteObject")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSaveAs)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionClose)
         self.menuView.addAction(self.actionShowClassesWithObjectsOnly)
-        self.menuEdit.addAction(self.actionNew_Object)
+        self.menuEdit.addAction(self.actionNewObject)
+        self.menuEdit.addAction(self.actionDeleteObject)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
@@ -98,6 +101,7 @@ class Ui_MainWindow(object):
         self.actionSave.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionShowClassesWithObjectsOnly.setText(QtGui.QApplication.translate("MainWindow", "Show Classes with Objects Only", None, QtGui.QApplication.UnicodeUTF8))
         self.actionShowClassesWithObjectsOnly.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+L", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNew_Object.setText(QtGui.QApplication.translate("MainWindow", "New Object", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNew_Object.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNewObject.setText(QtGui.QApplication.translate("MainWindow", "New Object", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNewObject.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDeleteObject.setText(QtGui.QApplication.translate("MainWindow", "Delete Object", None, QtGui.QApplication.UnicodeUTF8))
 
