@@ -11,7 +11,7 @@ def build():
 
 def run_acceptance_tests(tests):
     os.chdir('tests/acceptance')
-    os.system('nosetests-3.3 ' + ' '.join(tests))
+    os.system('py.test ' + ' '.join(tests))
     os.chdir('../..')
 
 if __name__ == '__main__':
