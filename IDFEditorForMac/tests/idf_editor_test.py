@@ -1,5 +1,6 @@
 import pytest
 import os
+import os.path
 import errno
 import tests.harness as th
 from idf_editor import IdfEditorWindow
@@ -21,15 +22,19 @@ def editor(qApp):
     return IdfEditorWindow()
 
 
-def test_open_file_and_save_as_other(editor):
+def test_open_file_and_save_as_other_remembers_filepath(editor):
+    assert editor.currentfile == ''
     try:
         os.remove('other_file.idf')
     except OSError as e:
         if e.errno != errno.ENOENT:  # errno.ENOENT = no such file or directory
             raise  # re-raise exception if a different error occured
-    editor.openFile('test_file.idf')
-    editor.saveFileAs('other_file.idf')
 
+    editor.openFile('test_file.idf')
+    assert editor.currentfile == os.path.join(os.getcwd(), 'test_file.idf')
+
+    editor.saveFileAs('other_file.idf')
+    assert editor.currentfile == os.path.join(os.getcwd(), 'other_file.idf')
     th.assert_idf_files('test_file.idf', 'other_file.idf')
 
 
@@ -97,6 +102,43 @@ def test_deletes_selected_object(editor):
     objs = editor.doc.objectsOfClass("ScheduleTypeLimits")
     assert len(objs) == 1
     assert objs[0][1] == "Comfort Temperature"
+
+
+def test_duplicates_selected_object_and_places_new_object_at_the_end(editor):
+
+    editor.openFile('test_file.idf')
+    assert len(editor.doc.objectsOfClass("ScheduleTypeLimits")) == 2
+
+    editor.selectClass('ScheduleTypeLimits')
+    select_object_field_at(editor.ui.tableView, 0, 0)
+
+    editor.duplicateObject()
+
+    objs = editor.doc.objectsOfClass("ScheduleTypeLimits")
+    assert len(objs) == 3
+    assert objs[0] == objs[2]
+
+
+def test_increments_object_count_when_adding_object(editor):
+    editor.openFile('test_file.idf')
+    editor.selectClass('Version')
+    select_object_field_at(editor.ui.tableView, 0, 0)
+
+    assert editor.textInClassSelector('Version') == '[0001] Version'
+
+    editor.addNewObject()
+    assert editor.textInClassSelector('Version') == '[0002] Version'
+
+
+def test_decrements_object_count_when_deleting_object(editor):
+    editor.openFile('test_file.idf')
+    editor.selectClass('Version')
+    select_object_field_at(editor.ui.tableView, 0, 0)
+
+    assert editor.textInClassSelector('Version') == '[0001] Version'
+
+    editor.deleteObject()
+    assert editor.textInClassSelector('Version') == '[0000] Version'
 
 # def test_input_object(editor):
 

@@ -9,8 +9,8 @@ def build():
     pass
 
 
-def run_acceptance_tests(tests):
-    os.chdir('tests/acceptance')
+def run_tests(tests):
+    os.chdir('tests')
     os.system('py.test ' + ' '.join(tests))
     os.chdir('../..')
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
     if cmd == 'build':
         build()
     if cmd == 'test':
-        run_acceptance_tests(sys.argv[2:])
+        run_tests(sys.argv[2:])

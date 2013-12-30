@@ -3,7 +3,8 @@
 
 
 import sys
-
+import os
+import copy
 from idf_doc import IdfDocument
 from PySide.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PySide.QtGui import QMainWindow, QApplication,\
@@ -20,21 +21,33 @@ class IdfEditorWindow(QMainWindow):
         ui.setupUi(self)
 
         self.doc = IdfDocument()
+        self.currentfile = ''
 
         ui.listView.setModel(QStringListModel())
         ui.tableView.setModel(IdfObjectsTableModel(self.doc))
 
         # menu actions
         ui.actionOpen.triggered.connect(self.actionOpenFile)
+        ui.actionSave.triggered.connect(self.actionSaveFile)
         ui.actionSaveAs.triggered.connect(self.actionSaveFileAs)
         ui.actionShowClassesWithObjectsOnly.triggered.connect(self.actionShowClassesWithObjectsOnly)
+
         ui.actionNewObject.triggered.connect(self.actionNewObject)
+        ui.actionDuplicateObject.triggered.connect(self.actionDuplicateObject)
         ui.actionDeleteObject.triggered.connect(self.actionDeleteObject)
 
         ui.listView.clicked.connect(self.actionClassClicked)
 
         self.showClassesWithObjectsOnly(False)
         self.selectClassAtIndex(0)
+
+        self.ui.tableView.model().columnsInserted.connect(self.changedObjectCountToClass)
+        self.ui.tableView.model().columnsRemoved.connect(self.changedObjectCountToClass)
+
+    def changedObjectCountToClass(self, parent, first, last):
+        qindex = self.ui.listView.currentIndex()
+        count = len(self.doc.objectsOfClass(self.selectedClass()))
+        self.ui.listView.model().setData(qindex, "[{0:04d}] {1}".format(count, self.selectedClass()))
 
     # ------------------------------------------------------------------------
     # UI Actions
@@ -44,19 +57,31 @@ class IdfEditorWindow(QMainWindow):
         filetuple = QFileDialog.getOpenFileName(self,
                                                 "Open File", ".",
                                                 "*.idf\n*.expidf")
-        self.openFile(filetuple[0])
+        path = filetuple[0]
+        if path == '':
+            return
+        self.openFile(path)
+
+    def actionSaveFile(self):
+        self.saveFile()
 
     def actionSaveFileAs(self):
         filetuple = QFileDialog.getSaveFileName(self,
                                                 "Save File", ".",
                                                 "*.idf")
-        self.saveFileAs(filetuple[0])
+        path = filetuple[0]
+        if path == '':
+            return
+        self.saveFileAs(path)
 
     def actionShowClassesWithObjectsOnly(self):
         self.showClassesWithObjectsOnly(self.ui.actionShowClassesWithObjectsOnly.isChecked())
 
     def actionNewObject(self):
         self.addNewObject()
+
+    def actionDuplicateObject(self):
+        self.duplicateObject()
 
     def actionDeleteObject(self):
         self.deleteObject()
@@ -68,11 +93,17 @@ class IdfEditorWindow(QMainWindow):
 
     def openFile(self, filepath):
         self.doc.readFromFile(filepath)
+        self.currentfile = os.path.join(os.getcwd(), filepath)
         self.showClassesWithObjectsOnly(False)
         self.selectClassAtIndex(0)
 
+    def saveFile(self):
+        if os.path.exists(self.currentfile):
+            self.doc.writeToFile(self.currentfile)
+
     def saveFileAs(self, filepath):
         self.doc.writeToFile(filepath)
+        self.currentfile = os.path.join(os.getcwd(), filepath)
 
     def showClassesWithObjectsOnly(self, state):
         self.ui.actionShowClassesWithObjectsOnly.setChecked(state)
@@ -109,11 +140,32 @@ class IdfEditorWindow(QMainWindow):
         index = self.ui.listView.currentIndex().row()
         return self.classes()[index]
 
+    def selectedObject(self):
+        qindex = self.ui.tableView.currentIndex()
+        return self.doc.objectOfClassAtIndex(self.selectedClass(), qindex.column())
+
+    def textInClassSelector(self, className):
+        try:
+            index = self.classes().index(className)
+            qindex = self.ui.listView.model().createIndex(index, 0)
+            return self.ui.listView.model().data(qindex, Qt.DisplayRole)
+        except ValueError:
+            return ""
+
     def addNewObject(self):
         self.ui.tableView.model().insertColumns(0, 1)
 
+    def duplicateObject(self):
+        # add column after last one
+        model = self.ui.tableView.model()
+        lastcol_index = model.columnCount()
+        self.ui.tableView.model().insertColumns(lastcol_index, 1)
+
+        # populate data
+        obj = self.selectedObject()
+        self.doc.replaceObjectAtIndexWithObject(lastcol_index, copy.deepcopy(obj))
+
     def deleteObject(self):
-        print("deleting object at: " + str(self.ui.tableView.currentIndex().column()))
         self.ui.tableView.model().removeColumns(self.ui.tableView.currentIndex().column(), 1)
 
     def classes(self):

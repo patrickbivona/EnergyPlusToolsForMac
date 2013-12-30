@@ -13,8 +13,11 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -75,8 +78,17 @@
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionNewObject"/>
-    <addaction name="actionDeleteObject"/>
+    <widget class="QMenu" name="menuObject">
+     <property name="title">
+      <string>Object</string>
+     </property>
+     <addaction name="actionNewObject"/>
+     <addaction name="actionDuplicateObject"/>
+     <addaction name="actionDeleteObject"/>
+     <addaction name="actionCopyObject"/>
+     <addaction name="actionPasteObject"/>
+    </widget>
+    <addaction name="menuObject"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -89,7 +101,41 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="floatable">
+    <bool>true</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionNewObject"/>
+   <addaction name="actionDuplicateObject"/>
+   <addaction name="actionDeleteObject"/>
+   <addaction name="actionCopyObject"/>
+   <addaction name="actionPasteObject"/>
+  </widget>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="idf_editor.qrc">
+     <normaloff>:/images/16x16/document-open.png</normaloff>:/images/16x16/document-open.png</iconset>
+   </property>
    <property name="text">
     <string>Open...</string>
    </property>
@@ -98,6 +144,10 @@
    </property>
   </action>
   <action name="actionSaveAs">
+   <property name="icon">
+    <iconset resource="idf_editor.qrc">
+     <normaloff>:/images/16x16/document-save-as.png</normaloff>:/images/16x16/document-save-as.png</iconset>
+   </property>
    <property name="text">
     <string>Save As...</string>
    </property>
@@ -114,6 +164,10 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="idf_editor.qrc">
+     <normaloff>:/images/16x16/document-save.png</normaloff>:/images/16x16/document-save.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -134,6 +188,12 @@
   </action>
   <action name="actionNewObject">
    <property name="text">
+    <string>New</string>
+   </property>
+   <property name="iconText">
+    <string>New Obj</string>
+   </property>
+   <property name="toolTip">
     <string>New Object</string>
    </property>
    <property name="shortcut">
@@ -142,11 +202,52 @@
   </action>
   <action name="actionDeleteObject">
    <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="iconText">
+    <string>Del Obj</string>
+   </property>
+   <property name="toolTip">
     <string>Delete Object</string>
    </property>
   </action>
+  <action name="actionCopyObject">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="iconText">
+    <string>Copy Obj</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy Object</string>
+   </property>
+  </action>
+  <action name="actionDuplicateObject">
+   <property name="text">
+    <string>Duplicate</string>
+   </property>
+   <property name="iconText">
+    <string>Dup Obj</string>
+   </property>
+   <property name="toolTip">
+    <string>Duplicate Object</string>
+   </property>
+  </action>
+  <action name="actionPasteObject">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="iconText">
+    <string>Paste Obj</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste Object</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="idf_editor.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionClose</sender>

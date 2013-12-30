@@ -1,4 +1,5 @@
-First, a native Mac app that does the same job as the IDF Editor on Windows, maybe making it a bit smarter in the process.
-And then maybe more, like a graphical simulation launcher.
+I originally started this project with the idea of developing a IDF Editor for Mac only, using the native Mac UI library. I've now moved to using Qt and be full python, so this editor will support Mac, Linux and maybe Windows.
 
-This is very very early days...
+It should do pretty the same job as the IDF Editor on Windows bundled with EnergyPlus, maybe making it a bit smarter in the process. 
+
+This is still very early days...
