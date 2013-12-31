@@ -73,25 +73,25 @@ class IdfEditorWindow(QMainWindow):
     # ------------------------------------------------------------------------
 
     def actionOpenFile(self):
-        filetuple = QFileDialog.getOpenFileName(self,
-                                                "Open File", ".",
-                                                "*.idf\n*.expidf")
-        path = filetuple[0]
-        if path == '':
-            return
-        self.openFile(path)
+        path = QFileDialog.getOpenFileName(self,
+                                           "Open File", ".",
+                                           "*.idf\n*.expidf")
+        print(path)
+        if path != '':
+            self.openFile(path)
 
     def actionSaveFile(self):
-        self.saveFile()
+        if self.currentfile == '':
+            self.actionSaveFileAs()
+        else:
+            self.saveFile()
 
     def actionSaveFileAs(self):
-        filetuple = QFileDialog.getSaveFileName(self,
-                                                "Save File", ".",
-                                                "*.idf")
-        path = filetuple[0]
-        if path == '':
-            return
-        self.saveFileAs(path)
+        path = QFileDialog.getSaveFileName(self,
+                                           "Save File", ".",
+                                           "*.idf")
+        if path != '':
+            self.saveFileAs(path)
 
     def actionShowClassesWithObjectsOnly(self):
         self.showClassesWithObjectsOnly(self.ui.actionShowClassesWithObjectsOnly.isChecked())
