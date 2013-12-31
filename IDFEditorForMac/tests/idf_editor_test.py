@@ -4,9 +4,9 @@ import os.path
 import errno
 import tests.harness as th
 from idf_editor import IdfEditorWindow
-from PySide.QtGui import QApplication
-from PySide.QtCore import Qt, QPoint
-from PySide.QtTest import QTest
+from PyQt4.QtGui import QApplication
+from PyQt4.QtCore import Qt, QPoint
+from PyQt4.QtTest import QTest
 
 
 @pytest.fixture

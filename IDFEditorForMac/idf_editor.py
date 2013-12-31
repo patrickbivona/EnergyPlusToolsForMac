@@ -6,8 +6,8 @@ import sys
 import os
 import copy
 from idf_doc import IdfDocument
-from PySide.QtCore import Qt, QAbstractTableModel, QModelIndex
-from PySide.QtGui import QMainWindow, QApplication,\
+from PyQt4.QtCore import Qt, QAbstractTableModel, QModelIndex
+from PyQt4.QtGui import QMainWindow, QApplication,\
     QFileDialog, QStringListModel
 
 from ui_idf_editor import Ui_MainWindow as Ui
@@ -45,6 +45,23 @@ class IdfEditorWindow(QMainWindow):
 
         self.ui.tableView.model().columnsInserted.connect(self.changedObjectCountToClass)
         self.ui.tableView.model().columnsRemoved.connect(self.changedObjectCountToClass)
+
+        self.ui.tableView.selectionModel().selectionChanged.connect(self.objectSelectionChanged)
+        QApplication.clipboard().dataChanged.connect(self.clipboardDataChanged)
+
+    def objectSelectionChanged(self, selected, deselected):
+        # this seems necessary to prevent a segfault on exit
+        if selected is None:
+            return
+        enabled = selected.count() > 0
+        self.ui.actionDuplicateObject.setEnabled(enabled)
+        self.ui.actionDeleteObject.setEnabled(enabled)
+        self.ui.actionCopyObject.setEnabled(enabled)
+
+    def clipboardDataChanged(self):
+        text = QApplication.clipboard().text()
+        enabled = len(text) > 0 and text.startswith("IDF,")
+        self.ui.actionPasteObject.setEnabled(enabled)
 
     def changedObjectCountToClass(self, parent, first, last):
         qindex = self.ui.listView.currentIndex()

@@ -201,6 +201,9 @@
    </property>
   </action>
   <action name="actionDeleteObject">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Delete</string>
    </property>
@@ -212,6 +215,9 @@
    </property>
   </action>
   <action name="actionCopyObject">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Copy</string>
    </property>
@@ -223,6 +229,9 @@
    </property>
   </action>
   <action name="actionDuplicateObject">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Duplicate</string>
    </property>
@@ -234,6 +243,9 @@
    </property>
   </action>
   <action name="actionPasteObject">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Paste</string>
    </property>
