@@ -140,6 +140,33 @@ def test_decrements_object_count_when_deleting_object(editor):
     editor.deleteObject()
     assert editor.textInClassSelector('Version') == '[0000] Version'
 
+
+def test_copies_selected_obj_to_clipboad(editor):
+
+    clipboard = QApplication.clipboard()
+    clipboard.clear()
+
+    editor.openFile('test_file.idf')
+    editor.selectClass("ScheduleTypeLimits")
+    select_object_field_at(editor.ui.tableView, 0, 0)
+
+    editor.copyObject()
+
+    assert clipboard.text() == "IDF,ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless;"
+
+
+def test_pastes_obj_from_clipboard(editor):
+
+    QApplication.clipboard().setText("IDF,ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless;")
+    editor.selectClass("ScheduleTypeLimits")
+
+    editor.pasteObject()
+
+    objs = editor.doc.objectsOfClass("ScheduleTypeLimits")
+    assert len(objs) == 1
+    assert editor.doc.objectsOfClass("ScheduleTypeLimits")[0] == "ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(",")
+
+
 # def test_input_object(editor):
 
 #     editor.selectClass("ScheduleTypeLimits")

@@ -35,6 +35,8 @@ class IdfEditorWindow(QMainWindow):
         ui.actionNewObject.triggered.connect(self.actionNewObject)
         ui.actionDuplicateObject.triggered.connect(self.actionDuplicateObject)
         ui.actionDeleteObject.triggered.connect(self.actionDeleteObject)
+        ui.actionCopyObject.triggered.connect(self.copyObject)
+        ui.actionPasteObject.triggered.connect(self.pasteObject)
 
         ui.listView.clicked.connect(self.actionClassClicked)
 
@@ -167,6 +169,21 @@ class IdfEditorWindow(QMainWindow):
 
     def deleteObject(self):
         self.ui.tableView.model().removeColumns(self.ui.tableView.currentIndex().column(), 1)
+
+    def copyObject(self):
+        obj = self.selectedObject()
+        QApplication.clipboard().setText("IDF," + ",".join(obj) + ";")
+
+    def pasteObject(self):
+        # remove last character, supposed to be a colon
+        clipObj = QApplication.clipboard().text()[:-1]
+        obj = clipObj.split(",")
+        # remove "IDF" prefix
+        obj = obj[1:]
+
+        self.addNewObject()
+        lastcol_index = self.ui.tableView.model().columnCount() - 1
+        self.doc.replaceObjectAtIndexWithObject(lastcol_index, obj)
 
     def classes(self):
         if self.ui.actionShowClassesWithObjectsOnly.isChecked():
