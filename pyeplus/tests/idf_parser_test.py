@@ -1,94 +1,112 @@
-import unittest
+import pytest
 import os
 import eplus
 import tests.harness as test
 
 
-class IdfParserTest(unittest.TestCase):
+@pytest.fixture
+def defs():
+    defs = eplus.ClassDefinitions()
+    defs.add_class_def(eplus.ClassDefinition('Class'))
+    return defs
 
-    def setUp(self):
-        self.defs = eplus.ClassDefinitions()
-        self._add_class_def('Class')
-        self.p = eplus.IdfParser(self.defs)
 
-    def test_parses_single_inline_object_without_spaces(self):
-        idf = "Class,value1,value2,value3;"
-        expected = ['Class value1 value2 value3'.split(' ')]
-        self._assert_parsing(idf, expected)
+@pytest.fixture
+def parser(defs):
+    return eplus.IdfParser(defs)
 
-    def test_parses_single_inline_object_with_spaces_and_return(self):
-        idf = "  \n   Class, value1, \n value2, value3;"
-        expected = ['Class value1 value2 value3'.split(' ')]
-        self._assert_parsing(idf, expected)
 
-    def test_parses_single_object_on_multiple_lines(self):
-        idf = """Class,\n
-          value1,
-          value2,
-          value3;"""
-        expected = ['Class value1 value2 value3'.split(' ')]
-        self._assert_parsing(idf, expected)
+def test_parses_single_inline_object_without_spaces(parser):
+    idf = "Class,value1,value2,value3;"
+    expected = ['Class value1 value2 value3'.split(' ')]
+    _assert_parsing(parser, idf, expected)
 
-    def test_accepts_empty_fields_as_empty_strings(self):
-        idf = 'Class,,field,;'
-        self._assert_parsing(idf, [['Class', '', 'field', '']])
 
-    def test_accepts_field_comments(self):
-        idf = """Class,
-        field1, !- comment1, with ; delimeters for objects
-        field2, !- comment2
-        field3; !- comment3
-        """
-        self._assert_parsing(idf, [['Class', 'field1', 'field2', 'field3']])
+def test_parses_single_inline_object_with_spaces_and_return(parser):
+    idf = "  \n   Class, value1, \n value2, value3;"
+    expected = ['Class value1 value2 value3'.split(' ')]
+    _assert_parsing(parser, idf, expected)
 
-    def test_accepts_multiwords_string_fields(self):
-        idf = "Class,field with more than 1 word;"
-        self._assert_parsing(idf, [['Class', 'field with more than 1 word']])
 
-    def test_accepts_integer_fields(self):
-        idf = "Class,34;"
-        self._assert_parsing(idf, [['Class', '34']])
+def test_parses_single_object_on_multiple_lines(parser):
+    idf = """Class,\n
+      value1,
+      value2,
+      value3;"""
+    expected = ['Class value1 value2 value3'.split(' ')]
+    _assert_parsing(parser, idf, expected)
 
-    def test_accepts_float_fields(self):
-        idf = "Class,42.6;"
-        self._assert_parsing(idf, [['Class', '42.6']])
 
-    def test_accepts_class_names_with_colons(self):
-        self._add_class_def('Class:With:Colon')
-        idf = "Class:With:Colon,42;"
-        self._assert_parsing(idf, [['Class:With:Colon', '42']])
+def test_accepts_empty_fields_as_empty_strings(parser):
+    idf = 'Class,,field,;'
+    _assert_parsing(parser, idf, [['Class', '', 'field', '']])
 
-    #
-    # Handling of invalid content
-    #
 
-    def test_parsing_skips_objects_of_unknown_classes(self):
-        objs = self.p.parse("Class,field1;\nOtherClass,field2;")
-        self.assertEquals(self.p.errors, ['Found unsupported object: OtherClass,field2;'])
-        self.assertEquals(objs, [['Class', 'field1']])
+def test_accepts_field_comments(parser):
+    idf = """Class,
+    field1, !- comment1, with ; delimeters for objects
+    field2, !- comment2
+    field3; !- comment3
+    """
+    _assert_parsing(parser, idf, [['Class', 'field1', 'field2', 'field3']])
 
-    #
-    # File IO
-    #
 
-    def test_parses_from_file(self):
-        expected = ['Class value1 value2 value3'.split(' ')]
-        objects = self.p.parse_file(test.path_to_datafile('simple_object.idf'))
-        self.assertEqual(objects, expected)
+def test_accepts_multiwords_string_fields(parser):
+    idf = "Class,field with more than 1 word;"
+    _assert_parsing(parser, idf, [['Class', 'field with more than 1 word']])
 
-    def test_writes_objects_to_file(self):
-        filename = test.path_to_datafile('expexted_file.idf')
-        if os.path.exists(filename):
-            os.remove(filename)
-        objects = ['Class value1 value2 value3'.split(' ')]
-        self.p.write_file(objects, filename, eplus.InlineIdfFormatter())
 
+def test_accepts_integer_fields(parser):
+    idf = "Class,34;"
+    _assert_parsing(parser, idf, [['Class', '34']])
+
+
+def test_accepts_float_fields(parser):
+    idf = "Class,42.6;"
+    _assert_parsing(parser, idf, [['Class', '42.6']])
+
+
+def test_accepts_class_names_with_colons(parser, defs):
+    _add_class_def(defs, 'Class:With:Colon')
+    idf = "Class:With:Colon,42;"
+    _assert_parsing(parser, idf, [['Class:With:Colon', '42']])
+
+
+#
+# Handling of invalid content
+#
+
+def test_parsing_skips_objects_of_unknown_classes(parser):
+    objs = parser.parse("Class,field1;\nOtherClass,field2;")
+    assert parser.errors == ['Found unsupported object: OtherClass,field2;']
+    assert objs == [['Class', 'field1']]
+
+
+#
+# File IO
+#
+
+def test_parses_from_file(parser):
+    expected = ['Class value1 value2 value3'.split(' ')]
+    objects = parser.parse_file(test.path_to_datafile('simple_object.idf'))
+    assert objects == expected
+
+
+def test_writes_objects_to_file(parser):
+    filename = test.path_to_datafile('expexted_file.idf')
+    if os.path.exists(filename):
         os.remove(filename)
+    objects = ['Class value1 value2 value3'.split(' ')]
+    parser.write_file(objects, filename, eplus.InlineIdfFormatter())
 
-    def _assert_parsing(self, idf, expected_objects):
-        objs = self.p.parse(idf)
-        self.assertEquals(self.p.errors, [])
-        self.assertEquals(objs, expected_objects)
+    os.remove(filename)
 
-    def _add_class_def(self, class_name):
-        self.defs.add_class_def(eplus.ClassDefinition(class_name))
+
+def _assert_parsing(parser, idf, expected_objects):
+    objs = parser.parse(idf)
+    assert parser.errors == []
+    assert objs == expected_objects
+
+
+def _add_class_def(defs, class_name):
+    defs.add_class_def(eplus.ClassDefinition(class_name))

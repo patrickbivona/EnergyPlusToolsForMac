@@ -1,37 +1,39 @@
-import unittest
+import pytest
 import os
 import eplus
 
 
-class IdfFormattingTestCase(unittest.TestCase):
+@pytest.fixture
+def parser():
+    return eplus.IdfParser(eplus.NoddingClassDefinitions())
 
-    def setUp(self):
-        self.p = eplus.IdfParser(eplus.NoddingClassDefinitions())
-        self.objs = [
-            "Version,8.0".split(','),
-            "ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(',')
-        ]
-        if os.path.exists('test_file.idf'):
-            os.remove('test_file.idf')
 
-    def tearDown(self):
-        if os.path.exists('test_file.idf'):
-            os.remove('test_file.idf')
+@pytest.fixture
+def objs():
+    if os.path.exists('test_file.idf'):
+        os.remove('test_file.idf')
 
-    def test_inline_formatting(self):
+    return [
+        "Version,8.0".split(','),
+        "ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless".split(',')
+    ]
 
-        self.p.write_file(self.objs, 'test_file.idf', eplus.InlineIdfFormatter())
 
-        expected = """Version,8.0;
+def test_inline_formatting(parser, objs):
+
+    parser.write_file(objs, 'test_file.idf', eplus.InlineIdfFormatter())
+
+    expected = """Version,8.0;
 ScheduleTypeLimits,Fraction,0,1,Continuous,Dimensionless;
 """
-        self._assertIdfFileContentEquals('test_file.idf', expected)
+    assertIdfFileContentEquals('test_file.idf', expected)
 
-    def test_pretty_formatting_without_comments(self):
-        if os.path.exists('test_file.idf'):
-            os.remove('test_file.idf')
 
-        expected = """Version,
+def test_pretty_formatting_without_comments(parser, objs):
+    if os.path.exists('test_file.idf'):
+        os.remove('test_file.idf')
+
+    expected = """Version,
     8.0;
 
 ScheduleTypeLimits,
@@ -42,10 +44,11 @@ ScheduleTypeLimits,
     Dimensionless;
 
 """
-        self.p.write_file(self.objs, 'test_file.idf', eplus.PrettyIdfFormatter(False))
-        self._assertIdfFileContentEquals('test_file.idf', expected)
+    parser.write_file(objs, 'test_file.idf', eplus.PrettyIdfFormatter(False))
+    assertIdfFileContentEquals('test_file.idf', expected)
 
-    def _assertIdfFileContentEquals(self, file, expected):
-        with open(file, 'r') as f:
-            content = f.read()
-        self.assertEquals(content, expected)
+
+def assertIdfFileContentEquals(file, expected):
+    with open(file, 'r') as f:
+        content = f.read()
+    assert content == expected
