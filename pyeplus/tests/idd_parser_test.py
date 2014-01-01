@@ -24,7 +24,7 @@ def test_accepts_alpha_fields(parser):
     """
     defs = parser.parse(idd)
     class_def = defs.class_def('Class')
-    assertField(class_def.fields[0], 'A1', 'Field1', 'alpha')
+    assert_field(class_def.fields[0], 'A1', 'Field1', 'alpha')
 
 
 def test_accepts_integer_fields(parser):
@@ -35,7 +35,7 @@ def test_accepts_integer_fields(parser):
     """
     defs = parser.parse(idd)
     class_def = defs.class_def('Class')
-    assertField(class_def.fields[0], 'N1', 'Field1', 'integer')
+    assert_field(class_def.fields[0], 'N1', 'Field1', 'integer')
 
 
 def test_parses_definitions_on_multiple_lines(parser):
@@ -58,7 +58,7 @@ def test_allows_using_bracket_operator_to_find_class_def(parser):
     assert defs['Class'].name == 'Class'
 
 
-def assertField(field, expected_id, expected_name, expected_type):
+def assert_field(field, expected_id, expected_name, expected_type):
     assert field.id == expected_id
     assert field.attributes['field'] == expected_name
     assert field.attributes['type'] == expected_type

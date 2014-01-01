@@ -83,11 +83,12 @@ class DataDictionaryParser(object):
         self.field_id = pp.Combine(pp.oneOf('A N') + pp.Word(pp.nums))
 
         self.field_attribute_key = pp.Word(pp.alphas, pp.alphas + '-')
-        self.field_attribute = pp.Group(pp.Suppress(self.backslash) + self.field_attribute_key + \
-                                    pp.Word(pp.printables))
+        self.field_attribute = pp.Group(pp.Suppress(self.backslash) +
+                                        self.field_attribute_key +
+                                        pp.Word(pp.printables))
         self.field_definition = pp.Group(self.field_id.setResultsName("id") +
-                                    (self.comma | self.semicolon) +
-                                    pp.Group(pp.Dict((pp.ZeroOrMore(self.field_attribute)))))
+                                         (self.comma | self.semicolon) +
+                                         pp.Group(pp.Dict((pp.ZeroOrMore(self.field_attribute)))))
         self.field_level_attributes = pp.Group(pp.Dict((pp.ZeroOrMore(self.field_attribute))))
 
         self.class_attribute_memo = self.backslash + pp.Literal('memo') + pp.OneOrMore(pp.Word(pp.printables))
@@ -95,8 +96,8 @@ class DataDictionaryParser(object):
 
         self.class_name = pp.Word(pp.alphanums).setResultsName("class_name")
         self.classs = self.class_name + self.comma + \
-                        pp.ZeroOrMore(self.class_attributes) + \
-                        pp.OneOrMore(self.field_definition).setResultsName("fields")
+            pp.ZeroOrMore(self.class_attributes) + \
+            pp.OneOrMore(self.field_definition).setResultsName("fields")
         self.classes = pp.ZeroOrMore(pp.Group(self.classs))
         self.classs.setDebug()
 

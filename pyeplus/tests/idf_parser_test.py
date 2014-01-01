@@ -19,13 +19,13 @@ def parser(defs):
 def test_parses_single_inline_object_without_spaces(parser):
     idf = "Class,value1,value2,value3;"
     expected = ['Class value1 value2 value3'.split(' ')]
-    _assert_parsing(parser, idf, expected)
+    assert_parsing(parser, idf, expected)
 
 
 def test_parses_single_inline_object_with_spaces_and_return(parser):
     idf = "  \n   Class, value1, \n value2, value3;"
     expected = ['Class value1 value2 value3'.split(' ')]
-    _assert_parsing(parser, idf, expected)
+    assert_parsing(parser, idf, expected)
 
 
 def test_parses_single_object_on_multiple_lines(parser):
@@ -34,12 +34,12 @@ def test_parses_single_object_on_multiple_lines(parser):
       value2,
       value3;"""
     expected = ['Class value1 value2 value3'.split(' ')]
-    _assert_parsing(parser, idf, expected)
+    assert_parsing(parser, idf, expected)
 
 
 def test_accepts_empty_fields_as_empty_strings(parser):
     idf = 'Class,,field,;'
-    _assert_parsing(parser, idf, [['Class', '', 'field', '']])
+    assert_parsing(parser, idf, [['Class', '', 'field', '']])
 
 
 def test_accepts_field_comments(parser):
@@ -48,28 +48,28 @@ def test_accepts_field_comments(parser):
     field2, !- comment2
     field3; !- comment3
     """
-    _assert_parsing(parser, idf, [['Class', 'field1', 'field2', 'field3']])
+    assert_parsing(parser, idf, [['Class', 'field1', 'field2', 'field3']])
 
 
 def test_accepts_multiwords_string_fields(parser):
     idf = "Class,field with more than 1 word;"
-    _assert_parsing(parser, idf, [['Class', 'field with more than 1 word']])
+    assert_parsing(parser, idf, [['Class', 'field with more than 1 word']])
 
 
 def test_accepts_integer_fields(parser):
     idf = "Class,34;"
-    _assert_parsing(parser, idf, [['Class', '34']])
+    assert_parsing(parser, idf, [['Class', '34']])
 
 
 def test_accepts_float_fields(parser):
     idf = "Class,42.6;"
-    _assert_parsing(parser, idf, [['Class', '42.6']])
+    assert_parsing(parser, idf, [['Class', '42.6']])
 
 
 def test_accepts_class_names_with_colons(parser, defs):
-    _add_class_def(defs, 'Class:With:Colon')
+    add_class_def(defs, 'Class:With:Colon')
     idf = "Class:With:Colon,42;"
-    _assert_parsing(parser, idf, [['Class:With:Colon', '42']])
+    assert_parsing(parser, idf, [['Class:With:Colon', '42']])
 
 
 #
@@ -102,11 +102,11 @@ def test_writes_objects_to_file(parser):
     os.remove(filename)
 
 
-def _assert_parsing(parser, idf, expected_objects):
+def assert_parsing(parser, idf, expected_objects):
     objs = parser.parse(idf)
     assert parser.errors == []
     assert objs == expected_objects
 
 
-def _add_class_def(defs, class_name):
+def add_class_def(defs, class_name):
     defs.add_class_def(eplus.ClassDefinition(class_name))
